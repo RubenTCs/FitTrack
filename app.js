@@ -1,35 +1,28 @@
-// app.js
+require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+const expressLayout = require('express-ejs-layouts');
 const app = express();
-const port = 3000;
+const port = 3000 || process.env.PORT;
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/fitness_tracking', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
-    console.log("Connected to MongoDB");
-})
-.catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
-});
-
-// Serve static files from the public directory
 app.use(express.static('public'));
 
-// Set EJS as view engine
+app.use(expressLayout);
+app.set('layout', './layouts/main')
 app.set('view engine', 'ejs');
 
-// Define routes
-app.get('/', (req, res) => {
-    res.render('index');
-});
+// // Connect to MongoDB
+// mongoose.connect('mongodb://localhost:27017/fitness_tracking', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// })
+// .then(() => {
+//     console.log("Connected to MongoDB");
+// })
+// .catch((error) => {
+//     console.error("Error connecting to MongoDB:", error);
+// });
 
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
-});
+app.use('/', require('./server/routes/main'))
 
 // Start server
 app.listen(port, () => {
