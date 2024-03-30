@@ -1,1 +1,84 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600;700&display=swap');
+
+:root {
+    --black: #000;
+    --white: #fff;
+    --yellow: #ffcc00;
+    --darkgray: #333;
+}
+
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+    background-color: var(--white);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+    
+    .header {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: var(--yellow);
+        color: var(--white);
+    }
+    
+    .header__logo {
+        font-size: 24px;
+        text-decoration: none;
+        color: var(--black);
+        font-weight: 800;
+    }
+    
+    .header__nav {
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+    }
+    
+    .header__nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+    }
+    
+    .header__nav ul li {
+        margin-right: 20px;
+    }
+    
+    .header__nav a {
+        text-decoration: none;
+        color: var(--black);
+        font-weight: 600;
+    }
+    .footer {
+        background-color: var(--darkgray);
+        color: var(--white);
+        padding: 20px;
+        text-align: center;
+    }
+
+    .footer__text {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .footer__link {
+        color: var(--yellow);
+        text-decoration: none;
+    }
+
+    .footer__link:hover {
+        text-decoration: underline;
+    }
