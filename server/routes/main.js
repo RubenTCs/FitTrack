@@ -11,7 +11,21 @@ router.get('', (req, res) => {
     res.render('index', {locals});
 });
 
+router.get('/profile', (req, res) => {
+    const locals = {
+        title: 'Profile',
+        description: 'Profile page'
+    }
+
+    res.render('profile', {locals});
+});
+
 router.get('/about', (req, res) => {
-    res.render('about');
+    const locals = {
+        title: 'About',
+        description: 'About page'
+    }
+
+    res.render('about', {locals});
 });
 module.exports = router;
