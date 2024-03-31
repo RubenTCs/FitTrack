@@ -41,38 +41,38 @@ function Login() {
 
   return (
     <div className='w-full h-screen flex'>
-        <div className='w-[50%] h-[100%] bg-[#1a1a1a] text-white flex justify-center items-center'>
-            <form className='text-center border rounded-lg w-[600px] h-[400px] p-9'
-            onSubmit={handleLogin}
-            >
-                {/* Username Input */}
+    <div className='w-[100%] h-[100%] bg-[#1a1a1a] text-white flex flex-col justify-center items-center'>
+        <h2 className='text-3xl text-white mb-8'>LOGIN</h2>
+        <form className='text-center border rounded-lg w-[600px] h-[300px] p-9' onSubmit={handleLogin}>
+            {/* Username Input */}
+            <div className="mb-4">
                 <label>Username</label>
                 <br />
                 <input className='w-[400px] h-[40px] rounded-xl bg-zinc-700 p-2'
-                type='text'
-                placeholder='Username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}/>
-                <br />
-                <br />
+                    type='text'
+                    placeholder='Username'
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+            </div>
+            {/* Password Input */}
+            <div className="mb-4">
                 <label>Password</label>
                 <br />
                 <input className='w-[400px] h-[40px] rounded-xl bg-zinc-700 p-2'
-                type='password'
-                placeholder='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}/>
-                <br />
-                <br />
-                {/* Button */}
-                <button className='w-[200px] h-[50px] border hover:bg-teal-900'
-                type='submit'>Login</button>
-            </form>
-        </div>
-        <div className='w-[50%] h-[100%] flex justify-center items-center bg-teal-900'>
-            <h2 className='text-3xl text-white'>LOGIN</h2>
-        </div>
+                    type='password'
+                    placeholder='Password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
+            {/* Button */}
+            <button className='w-[200px] h-[50px] border hover:bg-teal-900' type='submit'>Login</button>
+        </form>
     </div>
+</div>
+
+
   )
 }
 
