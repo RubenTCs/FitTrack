@@ -1,48 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/Post');
 
-// GET
-// HOME
+
+router.use(express.urlencoded({ extended: false }));
 
 
 //Routes
-router.get('', async (req, res) => {
-    const locals = {
-        title: 'Routines',
-        description: 'Routines page'
-    }
+router.get('/',  (req, res) => {
 
     try{
-        const data = await Post.find();
-        res.render('index', {locals, data});
+        res.render('login', {title: 'Login', showHeader: false});
     } catch (error){
         console.log(error);
-    }    
-}); 
-router.get('/routine', async (req, res) => {
-    const locals = {
-        title: 'Routines',
-        description: 'Routines page'
     }
+}); 
+
+router.get('/routine', async (req, res) => {
+    
 
     try{
-        const data = await Post.find();
-        res.render('index', {locals, data});
+        res.render('index', {title: 'Routines'});
     } catch (error){
         console.log(error);
     }
 }); 
 
 router.get('/routine/1', async (req, res) => {
-    const locals = {
-        title: 'Routines',
-        description: 'Routines page'
-    }
 
     try{
-        const data = await Post.find();
-        res.render('index', {locals, data});
+        res.render('index', {title: 'Routines'});
     } catch (error){
         console.log(error);
     }
@@ -50,12 +36,8 @@ router.get('/routine/1', async (req, res) => {
 
 // 
 router.get('/profile', (req, res) => {
-    const locals = {
-        title: 'Profile',
-        description: 'Profile page'
-    }
 
-    res.render('profile', {locals});
+    res.render('profile', {title: 'Profile'});
 });
 
 router.get('/about', (req, res) => {
@@ -67,16 +49,11 @@ router.get('/about', (req, res) => {
     res.render('about', {locals});
 });
 
+router.get("/login", (req, res) => {
+    res.render("login", { title: "Login", showHeader: false });
+});
 
-// function insertPostData(){
-//     Post.insertMany([
-//         {
-//             title: 'Building on fire',
-//             body: 'This is body text',
-//         }
-//     ])
-// }
-// insertPostData();
-
-
+router.get("/signup", (req, res) => {
+    res.render("signup", { title: "Register", showHeader: false});
+});
 module.exports = router;
