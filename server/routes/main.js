@@ -6,41 +6,29 @@ router.use(express.urlencoded({ extended: false }));
 
 
 //Routes
-router.get('', async (req, res) => {
-    const locals = {
-        title: 'Login',
-        description: 'Routines page'
-    }
+router.get('/',  (req, res) => {
 
     try{
-        res.render('login', {locals});
+        res.render('login', {title: 'Login', showHeader: false});
     } catch (error){
         console.log(error);
     }
 }); 
 
-
 router.get('/routine', async (req, res) => {
-    const locals = {
-        title: 'Routines',
-        description: 'Routines page'
-    }
+    
 
     try{
-        res.render('index', {locals});
+        res.render('index', {title: 'Routines'});
     } catch (error){
         console.log(error);
     }
 }); 
 
 router.get('/routine/1', async (req, res) => {
-    const locals = {
-        title: 'Routines',
-        description: 'Routines page'
-    }
 
     try{
-        res.render('index', {locals});
+        res.render('index', {title: 'Routines'});
     } catch (error){
         console.log(error);
     }
@@ -48,12 +36,8 @@ router.get('/routine/1', async (req, res) => {
 
 // 
 router.get('/profile', (req, res) => {
-    const locals = {
-        title: 'Profile',
-        description: 'Profile page'
-    }
 
-    res.render('profile', {locals});
+    res.render('profile', {title: 'Profile'});
 });
 
 router.get('/about', (req, res) => {
