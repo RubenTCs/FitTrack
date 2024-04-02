@@ -14,19 +14,6 @@ app.use(express.static('public'));
 app.use(expressLayout);
 app.set('layout', './layouts/main')
 app.set('view engine', 'ejs');
-
-// // Connect to MongoDB
-// mongoose.connect('mongodb://localhost:27017/fitness_tracking', {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// })
-// .then(() => {
-//     console.log("Connected to MongoDB");
-// })
-// .catch((error) => {
-//     console.error("Error connecting to MongoDB:", error);
-// });
-
 app.use('/', require('./server/routes/main'))
 
 // Start server
