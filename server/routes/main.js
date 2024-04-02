@@ -1,25 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/Post');
 
-// GET
-// HOME
+
+router.use(express.urlencoded({ extended: false }));
 
 
 //Routes
 router.get('', async (req, res) => {
     const locals = {
-        title: 'Routines',
+        title: 'Login',
         description: 'Routines page'
     }
 
     try{
-        const data = await Post.find();
-        res.render('index', {locals, data});
+        res.render('login', {locals});
     } catch (error){
         console.log(error);
-    }    
+    }
 }); 
+
+
 router.get('/routine', async (req, res) => {
     const locals = {
         title: 'Routines',
@@ -27,8 +27,7 @@ router.get('/routine', async (req, res) => {
     }
 
     try{
-        const data = await Post.find();
-        res.render('index', {locals, data});
+        res.render('index', {locals});
     } catch (error){
         console.log(error);
     }
@@ -41,8 +40,7 @@ router.get('/routine/1', async (req, res) => {
     }
 
     try{
-        const data = await Post.find();
-        res.render('index', {locals, data});
+        res.render('index', {locals});
     } catch (error){
         console.log(error);
     }
@@ -67,16 +65,11 @@ router.get('/about', (req, res) => {
     res.render('about', {locals});
 });
 
+router.get("/login", (req, res) => {
+    res.render("login", { title: "Login", showHeader: false });
+});
 
-// function insertPostData(){
-//     Post.insertMany([
-//         {
-//             title: 'Building on fire',
-//             body: 'This is body text',
-//         }
-//     ])
-// }
-// insertPostData();
-
-
+router.get("/signup", (req, res) => {
+    res.render("signup", { title: "Register", showHeader: false});
+});
 module.exports = router;

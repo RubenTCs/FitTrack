@@ -1,21 +1,9 @@
-const express = require("express");
-const Collection = require("./mongo");
-const app = express();
-const path = require("path");
+const express = require('express');
+const router = express.Router();
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
-const bcryptjs = require("bcryptjs");
+const bcryptjs = require('bcryptjs');
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
-
-const templatePath = path.join(__dirname, "../templates");
-const publicPath = path.join(__dirname, "../public");
-
-app.set('view engine', 'ejs');
-app.set("views", templatePath);
-app.use(express.static(publicPath));
+const Auth = require('../models/auth');
 
 async function hashPass(password) {
     const res = await bcryptjs.hash(password, 10);
@@ -24,20 +12,37 @@ async function hashPass(password) {
 
 async function compare(userPass, hashPass) {
     const res = await bcryptjs.compare(userPass, hashPass);
-    return res;
-}
+    return res; 
+} 
 
-app.get("/", (req, res) => {
-    res.render("login");
+router.get('/signup', async (req, res) => {
+    const locals = {
+        title: 'Routines',
+        description: 'Routines page'
+    }
+
+    try{
+        res.render('signup', {locals});
+    } catch (error){
+        console.log(error);
+    }    
+}); 
+
+router.get("/signup", (req, res) => {
+    const locals = {
+        title: 'Sign Up',
+        description: 'Sign Up page'
+    }
+    try{
+        res.render('signup', {locals});
+    } catch (error){
+        console.log(error);
+    }    
 });
 
-app.get("/signup", (req, res) => {
-    res.render("signup");
-});
-
-app.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
     try {
-        const check = await Collection.findOne({ name: req.body.name });
+        const check = await Auth.findOne({ name: req.body.name });
         if (check) {
             res.send("User already exists");
         } else {
@@ -48,15 +53,15 @@ app.post("/signup", async (req, res) => {
                 password: await hashPass(req.body.password),
                 token: token
             };
-            await Collection.insertMany([data]);
-            res.render("home", { name: req.body.name });
+            await Auth.insertMany([data]);
+            res.render("routine", { name: req.body.name });
         }
     } catch {
         res.send("Wrong details");
     }
 });
 
-app.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const { name, password } = req.body;
 
@@ -64,7 +69,7 @@ app.post("/login", async (req, res) => {
             return res.send('<script>alert("Please enter both name and password"); window.location="/"</script>');
         }
 
-        const check = await Collection.findOne({ name });
+        const check = await Auth.findOne({ name });
         if (!check) {
             return res.send('<script>alert("Account not found"); window.location="/"</script>');
         }
@@ -75,15 +80,11 @@ app.post("/login", async (req, res) => {
                 maxAge: 600000,
                 httpOnly: true
             });
-            res.render("home", { name: check.name });
+            res.render("routine", { name: check.name });
         } else {
             res.send('<script>alert("Wrong password"); window.location="/"</script>');
         }
     } catch {
         res.send('<script>alert("Error occurred"); window.location="/"</script>');
     }
-});
-
-app.listen(3000, () => {
-    console.log("Port 3000 connected");
 });
