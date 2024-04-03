@@ -1,20 +1,4 @@
 <div class="info">
-    <div class="info__addRoutine">
-        <h2 class="info__title">Add Routine</h2>
-        <form action="/routine" method="POST">
-            <input type="text" name="routineName" placeholder="Routine Name">
-            <select name="exerciseType">
-                <option value="cardio">Cardio</option>
-                <option value="strength">Strength</option>
-                <option value="flexibility">Flexibility</option>
-            </select>
-            <select name="equipment">
-                <option value="dumbbells">Dumbbells</option>
-                <option value="barbell">Barbell</option>
-                <option value="resistance bands">Resistance Bands</option>
-                <option value="bodyweight">Bodyweight</option>
-            </select>
-            <button type="submit">Add Routine</button>
-        </form>
-    </div>
+    <%- include('addExercise.ejs') %>
+    <%- include('addRoutine.ejs') %>
 </div>

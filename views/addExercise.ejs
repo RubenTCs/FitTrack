@@ -1,0 +1,28 @@
+<div class="info__addExercise" style="display: none;">
+        <h2 class="info__title">Add Exercise</h2>
+        <form action="/exercise" method="POST" class="">
+            <input type="text" name="exerciseName" placeholder="Exercise Name">
+            <div class="dropdown">
+                <label for="type">Exercise Type:</label>
+                <select id="type" name="type">
+                    <option value="reps">Reps</option>
+                    <option value="repsOnly">Reps Only (Bodyweight)</option>
+                    <option value="repsPlusKg">Reps + Kg (Weighted Bodyweight)</option>
+                    <option value="repsMinusKg">Reps - Kg (Assisted Bodyweight)</option>
+                    <option value="duration">Duration</option>
+                    <option value="distanceDuration">Distance + Duration</option>
+                    <option value="kgDistance">Kg + Distance</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                    <label for="equipment">Equipment:</label>
+                <select name="equipment">
+                    <option value="dumbbells">Dumbbells</option>
+                    <option value="barbell">Barbell</option>
+                    <option value="resistance bands">Resistance Bands</option>
+                    <option value="bodyweight">Bodyweight</option>
+                </select>
+            </div>
+            <button type="submit">Add Routine</button>
+        </form>
+    </div>

@@ -345,29 +345,29 @@ body {
     padding: 20px;
     border: var(--lightgray) 1px solid;
     border-radius: 10px;
+    form {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-gap: 10px;
+        padding: 10px;
+    }
+    
+    input[type=text] {
+        width: 100%;
+        padding: 12px 12px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: none;
+        border-bottom: 2px solid var(--darkgray);
+    }
+    input[type=text]:focus {
+        outline: none;
+        border-bottom: 2px solid var(--darkgray);
+    }
+}
+.dropdown {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
 }
 
-.info__addRoutine {
-    display: grid;
-    grid-row: inherit;
-    align-items: center;
-}
 
-form {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-gap: 10px;
-    padding: 10px;
-}
-input[type=text] {
-    width: 100%;
-    padding: 12px 12px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: none;
-    border-bottom: 2px solid var(--darkgray);
-}
-input[type=text]:focus {
-    outline: none;
-    border-bottom: 2px solid var(--darkgray);
-}

@@ -4,6 +4,8 @@ const bcryptjs = require('bcryptjs');
 const router = express.Router();
 
 const Auth = require('../models/auth');
+const Routine = require('../models/routine');
+const Exercise = require('../models/exercise');
 
 router.use(express.urlencoded({ extended: false }));
 
@@ -17,6 +19,48 @@ async function compare(userPass, hashPass) {
     return res; 
 } 
 
+
+
+// Middleware to check if the user is authenticated
+function requireAuth(req, res, next) {
+    // Check if the user is logged in (by checking the presence of the JWT token)
+    const token = req.cookies.jwt;
+    if (token) {
+        jwt.verify(token, 'abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz', (err, decodedToken) => {
+            if (err) {
+                console.error(err.message);
+                res.redirect('/login');
+            } else {
+                // User is authenticated, proceed to the next middleware/route handler
+                next();
+            }
+        });
+    } else {
+        res.redirect('/login');
+    }
+}
+
+// Middleware to check if the logged-in user matches the requested username
+function requireCorrectUser(req, res, next) {
+    const token = req.cookies.jwt;
+    jwt.verify(token, 'abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz', async (err, decodedToken) => {
+        if (err) {
+            console.error(err.message);
+            res.redirect('/login');
+        } else {
+            const loggedinUsername = decodedToken.username;
+            const requestedUsername = req.params.username; // Assuming username is part of the URL path
+
+            if (loggedinUsername === requestedUsername) {
+                // User is authorized to access the resource, proceed to the next middleware/route handler
+                next();
+            } else {
+                res.status(403).send('You are not authorized to access this resource');
+            }
+        }
+    });
+}
+
 //Routes
 router.get('',  (req, res) => {
 
@@ -27,6 +71,7 @@ router.get('',  (req, res) => {
     }
 }); 
 
+//SignUp
 router.post("/signup", async (req, res) => {
     try {
         const checkEmail = await Auth.findOne({ email: req.body.email });
@@ -44,7 +89,7 @@ router.post("/signup", async (req, res) => {
                 token: token 
             };
             await Auth.insertMany([data]);
-            res.send('<script>alert("User Created"); window.location="/login"</script>');
+            return res.send('<script>alert("User Created"); window.location="/login"</script>');
         }
     } catch (error){
         console.error("Error during signup:", error);
@@ -78,12 +123,14 @@ router.post("/login", async (req, res) => {
         } else {
             res.send('<script>alert("Wrong password"); window.location="/"</script>');
         }
-    } catch {
-        res.send('<script>alert("Error occurred"); window.location="/"</script>');
+    } catch (error){
+        console.error("Error during login:", error);
+        return res.status(500).send("An error occurred during signup"); 
     }
 });
 
-router.get('/:username/routine', async (req, res) => {
+//Routine
+router.get('/:username/routine', requireAuth, requireCorrectUser, async (req, res) => {
     try{
         const userName = req.params.username;
         const user = await Auth.findOne({ username: userName });
@@ -102,20 +149,85 @@ router.get('/routine/1', async (req, res) => {
         console.log(error);
     }
 });
+//Profile
+router.get('/:username/profile', async (req, res) => {
+    try {
 
-router.get('/profile', (req, res) => {
+        const userName = req.params.username;
+        const user = await Auth.findOne({ username: userName });
 
-    res.render('profile', {title: 'Profile'});
+        res.render('profile', {title: 'Profile', user: user});
+    }
+    catch (error){
+        console.log(error);
+    }
+});
+//About
+router.get('/:username/about', async (req, res) => {
+    try {
+        const userName = req.params.username;
+        const user = await Auth.findOne({ username: userName });
+
+        res.render('about', {title: 'About', user: user});
+    }
+    catch (error){
+        console.log(error);
+    }
 });
 
-router.get('/about', (req, res) => {
-    const locals = {
-        title: 'About',
-        description: 'About page'
-    } 
+router.get('/routine', async (req, res) => {
+    try{
+        
+    } catch (error){
+        console.log(error);
+    }
 
-    res.render('about', {locals});
 });
+
+router.post('/addRoutine', async (req, res) => {
+    try{
+        const routineData = {
+            routinename: req.body.routinename,
+            description: req.body.description,
+            user: req.body.userId,
+        }
+        const username = req.params.username;
+        const createdRoutines = await Routine.insertMany(routineData);
+        res.redirect('/routines/${createdRoutines[0]._id}', {title: 'Routine', user: user});
+    }
+    catch (error){
+        console.log(error);
+    }
+    
+})
+
+// Add Routine meh
+// router.post('/addRoutine', async (req, res) => {
+//     try {
+//         const { username, routineName, type } = req.body;
+
+//         // Find the user
+//         const user = await Auth.findOne({ username });
+//         if (!user) {
+//             return res.send('<script>alert("User not found"); window.location="/"</script>');
+//         }
+
+//         // Create a new routine
+//         const newRoutine = new Routine({
+//             user: user._id,
+//             name: routineName,
+//             type: type
+//         });
+
+//         // Save the routine
+//         await Routine.insertMany([newRoutine]);
+
+//         res.send('<script>alert("Routine added successfully"); window.location="/' + username + '/routine"</script>');
+//     } catch (error) {
+//         console.error("Error adding routine:", error);
+//         return res.status(500).send("An error occurred while adding routine");
+//     }
+// });
 
 router.get("/login", (req, res) => {
     res.render("login", { title: "Login", showHeader: false });
