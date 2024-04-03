@@ -9,3 +9,11 @@ function addRoutineLink() {
     // document.getElementById("sidebar__list").appendChild(link);
     document.getElementById("")
 }
+
+function showAddRoutine() {
+    document.getElementById("info").style.display = "block";
+}
+
+function hideAddRoutine() {
+    document.getElementById("info").style.display = "none";
+}
