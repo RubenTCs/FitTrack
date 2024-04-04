@@ -155,7 +155,7 @@ router.get('/:username/routine', requireAuth, requireCorrectUser, async (req, re
 
 
 //Profile
-router.get('/:username/profile', async (req, res) => {
+router.get('/:username/profile', requireAuth, requireCorrectUser, async (req, res) => {
     try {
 
         const userName = req.params.username;
@@ -189,10 +189,12 @@ router.post('/addRoutine', async (req, res) => {
             description: req.body.description,
             user: req.body.userId,
         }
-        const userName = req.params.username;
-        const user = await Auth.findOne({ username: userName });
-        const createdRoutines = await Routine.insertMany(routineData);
-        res.redirect('/:username/routines/${createdRoutines[0]._id}', {title: 'Routine', user: user});
+
+        const username = req.body.username;
+
+        await Routine.insertMany(routineData);
+
+        res.redirect(`/${username}/routine`);
     }
     catch (error){
         console.log(error);
