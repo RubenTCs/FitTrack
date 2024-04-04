@@ -1,13 +1,10 @@
-function addRoutineLink() {
-    // // Create a new anchor element
-    // var link = document.createElement("a");
-    // link.href = "/routine/1";
-    // link.className = "_active";
-    // link.textContent = "Routine 1";
-    
-    // // Append the anchor element to the container
-    // document.getElementById("sidebar__list").appendChild(link);
-    document.getElementById("")
+function addRoutineSidebar() {
+    var addRoutineDiv = document.querySelector(".info__addRoutine");
+    if (addRoutineDiv.style.display === 'none') {
+        addRoutineDiv.style.display = 'block';
+    } else {
+        addRoutineDiv.style.display = 'none';
+    }
 }
 
 function showAddRoutine() {

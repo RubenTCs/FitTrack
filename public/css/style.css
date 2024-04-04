@@ -265,7 +265,8 @@ body {
     grid-gap: 10px;
     padding-bottom: 10px;
     width: auto;
-    height: 100vh;
+    min-height: 100vh;
+    max-height: auto;
 }
 
 .sidebar {
@@ -341,6 +342,7 @@ body {
 
 /* right side bar */
 .info {
+    
     padding: 20px;
     padding: 20px;
     border: var(--lightgray) 1px solid;

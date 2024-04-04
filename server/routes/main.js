@@ -131,24 +131,29 @@ router.post("/login", async (req, res) => {
 
 //Routine
 router.get('/:username/routine', requireAuth, requireCorrectUser, async (req, res) => {
-    try{
+    try {
         const userName = req.params.username;
+        
+        // Find the user
         const user = await Auth.findOne({ username: userName });
-        res.render('index', {title: 'Routines', user: user});
-    } catch (error){
+
+        // If user not found, handle appropriately
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Find routines for the user
+        const routines = await Routine.find({ user: user._id });
+
+        // Render the view with routines data
+        res.render('index', { title: 'Routines', user: user, routines: routines });
+    } catch (error) {
         console.log(error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
 
-router.get('/routine/1', async (req, res) => {
-
-    try{
-        res.render('index', {title: 'Routines'});
-    } catch (error){
-        console.log(error);
-    }
-});
 //Profile
 router.get('/:username/profile', async (req, res) => {
     try {
@@ -162,6 +167,7 @@ router.get('/:username/profile', async (req, res) => {
         console.log(error);
     }
 });
+
 //About
 router.get('/:username/about', async (req, res) => {
     try {
@@ -175,15 +181,7 @@ router.get('/:username/about', async (req, res) => {
     }
 });
 
-router.get('/routine', async (req, res) => {
-    try{
-        
-    } catch (error){
-        console.log(error);
-    }
-
-});
-
+//Add Routine
 router.post('/addRoutine', async (req, res) => {
     try{
         const routineData = {
@@ -191,9 +189,10 @@ router.post('/addRoutine', async (req, res) => {
             description: req.body.description,
             user: req.body.userId,
         }
-        const username = req.params.username;
+        const userName = req.params.username;
+        const user = await Auth.findOne({ username: userName });
         const createdRoutines = await Routine.insertMany(routineData);
-        res.redirect('/routines/${createdRoutines[0]._id}', {title: 'Routine', user: user});
+        res.redirect('/:username/routines/${createdRoutines[0]._id}', {title: 'Routine', user: user});
     }
     catch (error){
         console.log(error);
