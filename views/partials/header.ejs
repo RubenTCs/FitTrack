@@ -17,19 +17,24 @@
             <path d="M81.4678 57.9003L80.3428 59.0753V61.2003H78.4094V52.8003H80.3428V56.7253L84.0636 52.8003H86.2219L82.7428 56.5461L86.4261 61.2003H84.1594L81.4678 57.9003Z" fill="#FBAF41"/>
             </svg>
             
-        </a>
+    </a>
 
     <nav class="header__nav">
         <ul>
             <li>
-                <a href="/<%= user.username %>/routine" class="">Routine</a>
+                <a href="/<%= user.username %>/routine" class="nav">Routine</a>
             </li>
             <li>
-                <a href="/<%= user.username %>/profile" class="">Profile</a>
+                <a href="/<%= user.username %>/profile" class="nav">Profile</a>
             </li>
             <li>
-                <a href="/<%= user.username %>/about" class="">About</a>
+                <a href="/<%= user.username %>/about" class="nav">About</a>
             </li>
         </ul>
+        <a href="/logout" class="logoutBtn">Logout</a>
     </nav>
+            
+    
+            
+    
 </header>

@@ -51,6 +51,8 @@ function requireCorrectUser(req, res, next) {
             const loggedinUsername = decodedToken.username;
             const requestedUsername = req.params.username; // Assuming username is part of the URL path
 
+            console.log(loggedinUsername, requestedUsername);
+
             if (loggedinUsername === requestedUsername) {
                 // User is authorized to access the resource, proceed to the next middleware/route handler
                 next();
@@ -61,7 +63,16 @@ function requireCorrectUser(req, res, next) {
     });
 }
 
-//Routes
+//default Route
+router.get('/',  (req, res) => {
+
+    try{
+        res.render('login', {title: 'Login', showHeader: false});
+    } catch (error){
+        console.log(error);
+    }
+}); 
+//default Route
 router.get('',  (req, res) => {
 
     try{
@@ -97,6 +108,10 @@ router.post("/signup", async (req, res) => {
     } 
 }); 
 
+router.get("/signup", (req, res) => {
+    res.render("signup", { title: "Register", showHeader: false});
+});
+
 //login
 router.post("/login", async (req, res) => {
     try {
@@ -111,7 +126,7 @@ router.post("/login", async (req, res) => {
             return res.send('<script>alert("Account not found"); window.location="/login"</script>');
         }
 
-        const username = check.username;
+        const userId = check._id;
 
         const passCheck = await compare(password, check.password);
         if (passCheck) {
@@ -119,7 +134,7 @@ router.post("/login", async (req, res) => {
                 maxAge: 600000,
                 httpOnly: true
             });
-            res.redirect("/"+username+"/routine");
+            res.redirect("/user/"+userId+"/routine");
         } else {
             res.send('<script>alert("Wrong password"); window.location="/"</script>');
         }
@@ -129,13 +144,18 @@ router.post("/login", async (req, res) => {
     }
 });
 
+router.get("/login", (req, res) => {
+    res.render("login", { title: "Login", showHeader: false });
+});
+
 //Routine
-router.get('/:username/routine', requireAuth, requireCorrectUser, async (req, res) => {
+router.get('/user/:userId/routine', requireAuth, async (req, res) => {
     try {
-        const userName = req.params.username;
+        const userId = req.params.userId;
         
         // Find the user
-        const user = await Auth.findOne({ username: userName });
+        const user = await Auth.findById(userId);
+
 
         // If user not found, handle appropriately
         if (!user) {
@@ -143,10 +163,40 @@ router.get('/:username/routine', requireAuth, requireCorrectUser, async (req, re
         }
 
         // Find routines for the user
-        const routines = await Routine.find({ user: user._id });
+        const routines = await Routine.find({ user: userId });
 
         // Render the view with routines data
         res.render('index', { title: 'Routines', user: user, routines: routines });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Routine (after clicking on a routine)
+router.get('/user/:userId/routine/:routineId', requireAuth, async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const routineId = req.params.routineId;
+
+        // Find the user
+        const user = await Auth.findById(userId);
+
+        // If user not found, handle appropriately
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Find the routine for the user
+        const selectedRoutine = await Routine.findById(routineId);
+        const routines = await Routine.find({ user: userId });
+        // If routine not found, handle appropriately
+        if (!selectedRoutine || selectedRoutine.user.toString() !== userId) {
+            return res.status(404).send('Routine not found');
+        }
+
+        // Render the view with routine data
+        res.render('index', { title: 'Routine Detail', user: user, selectedRoutine: selectedRoutine, routines: routines });
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
@@ -202,39 +252,25 @@ router.post('/addRoutine', async (req, res) => {
     
 })
 
-// Add Routine meh
-// router.post('/addRoutine', async (req, res) => {
-//     try {
-//         const { username, routineName, type } = req.body;
-
-//         // Find the user
-//         const user = await Auth.findOne({ username });
-//         if (!user) {
-//             return res.send('<script>alert("User not found"); window.location="/"</script>');
-//         }
-
-//         // Create a new routine
-//         const newRoutine = new Routine({
-//             user: user._id,
-//             name: routineName,
-//             type: type
-//         });
-
-//         // Save the routine
-//         await Routine.insertMany([newRoutine]);
-
-//         res.send('<script>alert("Routine added successfully"); window.location="/' + username + '/routine"</script>');
-//     } catch (error) {
-//         console.error("Error adding routine:", error);
-//         return res.status(500).send("An error occurred while adding routine");
-//     }
-// });
-
-router.get("/login", (req, res) => {
-    res.render("login", { title: "Login", showHeader: false });
+router.get('/:userId/routine/:routineId', async (req, res) => {
+    try {
+        
+        const selectedRoutine = await Routine.findOne({ _id: req.params.routineId, user: req.params.userId }).populate('exercises');
+        const user = await Auth.findOne({ _id: req.params.userId });
+        const routines = await Routine.find({ user: user._id });
+        console.log(req.params.routineId, req.params.userId)  
+        
+        if (!selectedRoutine) {
+            return res.status(404).send('Routine not found');
+        }
+        res.render('index', { selectedRoutine, user, routines });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 });
 
-router.get("/signup", (req, res) => {
-    res.render("signup", { title: "Register", showHeader: false});
+router.get("/logout", (req, res) => {
+    res.clearCookie("jwt");
+    res.redirect("/");
 });
 module.exports = router;
