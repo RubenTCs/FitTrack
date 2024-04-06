@@ -1,4 +1,11 @@
 <div class="content">
     <%- include('sidebar.ejs') %>
-    <%- include('dummyRoutine.ejs') %>
+    <div class="content__routine">
+        <% if (isSelectedRoutine) { %>
+            <%- include('dummyRoutine.ejs') %>
+        <% } else { %>
+            <%- include('routineGuide.ejs') %>
+        <% } %>
+    </div>
+    
 </div>

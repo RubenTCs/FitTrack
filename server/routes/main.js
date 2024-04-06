@@ -31,7 +31,7 @@ function requireAuth(req, res, next) {
                 console.error(err.message);
                 res.redirect('/login');
             } else {
-                // User is authenticated, proceed to the next middleware/route handler
+                // if User is authenticated, proceed to the next middleware/route handler
                 next();
             }
         });
@@ -50,18 +50,16 @@ function requireCorrectUser(req, res, next) {
         } else {
             const loggedinUsername = decodedToken.username;
             const requestedUsername = req.params.username; // Assuming username is part of the URL path
-
-            console.log(loggedinUsername, requestedUsername);
-
+            // console.log(loggedinUsername, requestedUsername);
             if (loggedinUsername === requestedUsername) {
-                // User is authorized to access the resource, proceed to the next middleware/route handler
+                //if true, proceed to the next middleware/route handler
                 next();
             } else {
                 res.status(403).send('You are not authorized to access this resource');
             }
         }
     });
-}
+} 
 
 //default Route
 router.get('/',  (req, res) => {
@@ -126,15 +124,14 @@ router.post("/login", async (req, res) => {
             return res.send('<script>alert("Account not found"); window.location="/login"</script>');
         }
 
-        const userId = check._id;
-
         const passCheck = await compare(password, check.password);
         if (passCheck) {
             res.cookie("jwt", check.token, {
-                maxAge: 600000,
+                maxAge: 600000, //in 600000 miliseconds = 10 minutes
                 httpOnly: true
             });
-            res.redirect("/user/"+userId+"/routine");
+
+            res.redirect(`/user/${check.username}/routine?userId=${check._id}`); //better format??? the user_id is kinda exposed tho
         } else {
             res.send('<script>alert("Wrong password"); window.location="/"</script>');
         }
@@ -149,10 +146,12 @@ router.get("/login", (req, res) => {
 });
 
 //Routine
-router.get('/user/:userId/routine', requireAuth, async (req, res) => {
+router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (req, res) => {
     try {
-        const userId = req.params.userId;
-        
+        const userId = req.query.userId;
+        const username = req.params.username;
+        // console.log('userId: ', userId);
+        // console.log('username: ', username);
         // Find the user
         const user = await Auth.findById(userId);
 
@@ -166,7 +165,7 @@ router.get('/user/:userId/routine', requireAuth, async (req, res) => {
         const routines = await Routine.find({ user: userId });
 
         // Render the view with routines data
-        res.render('index', { title: 'Routines', user: user, routines: routines });
+        res.render('index', { title: 'Routines', user: user, routines: routines , isSelectedRoutine: false});
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
@@ -174,29 +173,29 @@ router.get('/user/:userId/routine', requireAuth, async (req, res) => {
 });
 
 // Routine (after clicking on a routine)
-router.get('/user/:userId/routine/:routineId', requireAuth, async (req, res) => {
+router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser, async (req, res) => {
     try {
-        const userId = req.params.userId;
+        const userId = req.query.userId;
+        const username = req.params.username;
+        console.log('userId: ', userId);
+        console.log('username: ', username);
+        
         const routineId = req.params.routineId;
-
-        // Find the user
         const user = await Auth.findById(userId);
 
-        // If user not found, handle appropriately
         if (!user) {
             return res.status(404).send('User not found');
         }
 
-        // Find the routine for the user
         const selectedRoutine = await Routine.findById(routineId);
         const routines = await Routine.find({ user: userId });
-        // If routine not found, handle appropriately
+
         if (!selectedRoutine || selectedRoutine.user.toString() !== userId) {
             return res.status(404).send('Routine not found');
         }
 
-        // Render the view with routine data
-        res.render('index', { title: 'Routine Detail', user: user, selectedRoutine: selectedRoutine, routines: routines });
+        
+        res.render('index', { title: selectedRoutine.routinename, user: user, selectedRoutine: selectedRoutine, routines: routines, isSelectedRoutine: true});
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
@@ -204,7 +203,7 @@ router.get('/user/:userId/routine/:routineId', requireAuth, async (req, res) => 
 });
 
 
-//Profile
+//Profile (considering removing this)
 router.get('/:username/profile', requireAuth, requireCorrectUser, async (req, res) => {
     try {
 
@@ -222,6 +221,7 @@ router.get('/:username/profile', requireAuth, requireCorrectUser, async (req, re
 router.get('/:username/about', async (req, res) => {
     try {
         const userName = req.params.username;
+        console.log('username: ', userName);
         const user = await Auth.findOne({ username: userName });
 
         res.render('about', {title: 'About', user: user});
@@ -251,23 +251,6 @@ router.post('/addRoutine', async (req, res) => {
     }
     
 })
-
-router.get('/:userId/routine/:routineId', async (req, res) => {
-    try {
-        
-        const selectedRoutine = await Routine.findOne({ _id: req.params.routineId, user: req.params.userId }).populate('exercises');
-        const user = await Auth.findOne({ _id: req.params.userId });
-        const routines = await Routine.find({ user: user._id });
-        console.log(req.params.routineId, req.params.userId)  
-        
-        if (!selectedRoutine) {
-            return res.status(404).send('Routine not found');
-        }
-        res.render('index', { selectedRoutine, user, routines });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
 
 router.get("/logout", (req, res) => {
     res.clearCookie("jwt");

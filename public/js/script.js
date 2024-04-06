@@ -12,6 +12,18 @@ function addRoutineSidebar() {
     }
 }
 
+function addExerciseSidebar() {
+    var addRoutineDiv = document.querySelector(".info__addRoutine");
+    var addExerciseDiv = document.querySelector(".info__addExercise");
+
+    if (addExerciseDiv.style.display === 'none') {
+        addRoutineDiv.style.display = 'none';
+        addExerciseDiv.style.display = 'block'; 
+    } else {
+        addExerciseDiv.style.display = 'none';
+    }
+}
+
 function displayRoutine(routineId) {
     fetch(`/<%= username %>/routines/${routineId}`)
         .then(response => response.text())

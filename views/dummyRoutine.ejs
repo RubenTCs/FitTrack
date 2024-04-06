@@ -2,17 +2,17 @@
 <div class="dummyRoutine">
     <div class="dummyRoutine__title">
         <h1 id="routineName"><%= selectedRoutine.routinename %></h1>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam iste mollitia autem dolor deserunt. Repudiandae, iure, cum adipisci numquam placeat excepturi itaque delectus repellendus consequatur recusandae quasi? Similique, quo maxime!</p>
+        <p> <%= selectedRoutine.description %></p>
         <hr>
     </div>
     
     <div class="dummyRoutine__content">
         <div class="dummyRoutine__exercise">
             <table id="exerciseTable">
-                <!-- Table content will be dynamically updated based on selected routine -->
+                <!-- dynamically updated based on selected routine -->
             </table>
-            <!-- Center the button -->
-            <a class='AddRoutine' onclick="addExerciseSidebar()">+ Add Exercise</a>
+            <!-- Center the button please -->
+            <a class='AddExercise' onclick="addExerciseSidebar()">+ Add Exercise</a>
     </div>
         
         <%- include('info.ejs') %>

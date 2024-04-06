@@ -6,7 +6,7 @@
             <a class='AddRoutine' onclick="addRoutineSidebar()">+ Add Routine</a>
             <% if (routines.length) { %>
                 <% routines.forEach(routine => { %>
-                    <a href="/user/<%= user._id %>/routine/<%= routine._id %>" class="_active"><%= routine.routinename %></a>
+                    <a href="/user/<%= user.username %>/routine/<%= routine._id %>?userId=<%= user._id %>" class="_active"><%= routine.routinename %></a>
                 <% }) %>
                 <% } %>
             

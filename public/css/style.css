@@ -7,6 +7,7 @@
     --darkgray: #333;
     --gray: #666;;
     --lightgray: #808183;
+    --red: 
 }
 
 
@@ -203,8 +204,13 @@ body {
         color: var(--black);
     }
     .logoutBtn {
-        color: var(--yellow);
-        padding-right: 100px;
+        text-decoration: none;
+        color: var(--black);
+        background-color: var(--yellow);
+        margin-right: 100px;
+        padding: 10px;
+        border: var(--lightgray) 1px solid;
+        border-radius: 10px;
     }
 }
 
@@ -274,7 +280,7 @@ body {
 }
 
 
-.dummyRoutine{
+.dummyRoutine, .routineGuide{
     padding: 20px;
 }
 
@@ -343,4 +349,15 @@ body {
     grid-template-rows: 1fr 1fr;
 }
 
+.AddExercise {
+    text-decoration: none;
+    color: var(--black);
+    padding: 10px;
+    border: var(--lightgray) 1px solid;
+    border-radius: 10px;
 
+}
+.AddExercise:hover {
+    background-color: var(--yellow);
+    cursor: pointer;
+}
