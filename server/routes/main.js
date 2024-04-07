@@ -5,7 +5,7 @@ const router = express.Router();
 
 const Auth = require('../models/auth');
 const Routine = require('../models/routine');
-const Exercise = require('../models/exercise');
+const customExercise = require('../models/customexercise');
 
 router.use(express.urlencoded({ extended: false }));
 
@@ -244,7 +244,7 @@ router.post('/addRoutine', async (req, res) => {
 
         await Routine.insertMany(routineData);
 
-        res.redirect(`/${username}/routine`);
+        res.redirect(`/user/${username}/routine?userId=${req.body.userId}`);
     }
     catch (error){
         console.log(error);

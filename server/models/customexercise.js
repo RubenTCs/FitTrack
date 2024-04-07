@@ -1,9 +1,15 @@
+// exercise.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ExerciseSchema = new Schema({
+const customExerciseSchema = new Schema({
     exercisename: {
         type: String,
+        required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     equipment: {
@@ -18,4 +24,4 @@ const ExerciseSchema = new Schema({
     },
     });
 
-module.exports = mongoose.model('Exercise', xerciseSchema);
+module.exports = mongoose.model('CustomExercise', customExerciseSchema);
