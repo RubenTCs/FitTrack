@@ -1,4 +1,3 @@
-const { response } = require("express");
 
 function addRoutineSidebar() {
     var addRoutineDiv = document.querySelector(".info__addRoutine");
@@ -22,13 +21,4 @@ function addExerciseSidebar() {
     } else {
         addExerciseDiv.style.display = 'none';
     }
-}
-
-function displayRoutine(routineId) {
-    fetch(`/<%= username %>/routines/${routineId}`)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('routineDetails').innerHTML = html;
-        })
-        .catch(error => console.error('Error fetching routine:', error));
 }
