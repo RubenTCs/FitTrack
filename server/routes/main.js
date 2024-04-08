@@ -186,8 +186,6 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
         const userId = req.query.userId;
 
         const exerciseDB = await ExerciseDB.find({});
-
-        // console.log('userId: ', userId);
         
         const routineId = req.params.routineId;
         const user = await Auth.findById(userId);
@@ -195,14 +193,15 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
         if (!user) {
             return res.status(404).send('User not found');
         }
-
-        const selectedRoutine = await Routine.findById(routineId);
+        
+        const selectedRoutine = await Routine.findById(routineId).populate('exercises');
         const routines = await Routine.find({ user: userId });
 
         if (!selectedRoutine || selectedRoutine.user.toString() !== userId) {
             return res.status(404).send('Routine not found');
         }
-
+        
+        
         
         res.render('index', { 
             title: selectedRoutine.routinename, 
@@ -210,7 +209,8 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
             selectedRoutine: selectedRoutine, 
             routines: routines, 
             isSelectedRoutine: true, 
-            exerciseDB: exerciseDB});
+            exerciseDB: exerciseDB
+        });
             
     } catch (error) {
         console.log(error);
