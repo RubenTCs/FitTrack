@@ -9,6 +9,9 @@
     <div class="dummyRoutine__content">
         <div class="dummyRoutine__exercise">
             <table id="exerciseTable">
+                <% selectedRoutine.exercises.forEach(exercise => { %>
+                    <li><%= exercise._id %></li>
+                <% }) %>
                 <!-- dynamically updated based on selected routine -->
             </table>
             <!-- Center the button please -->

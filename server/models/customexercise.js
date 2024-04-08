@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const customExerciseSchema = new Schema({
+const CustomExerciseSchema = new Schema({
     exercisename: {
         type: String,
         required: true
@@ -24,4 +24,4 @@ const customExerciseSchema = new Schema({
     },
     });
 
-module.exports = mongoose.model('CustomExercise', customExerciseSchema);
+module.exports = mongoose.model('CustomExercise', CustomExerciseSchema);

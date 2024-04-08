@@ -1,6 +1,21 @@
 <div class="info__addExercise" style="display: none;">
-        <h2 class="info__title">Add Exercise</h2>
-        <form action="/exercise" method="POST" class="">
+    <div class="dbExercise">
+        <form class="ExerciseForm">
+            <h2 class="info__title">Add Exercise</h2>
+            <input type="text" id="searchInput" placeholder="Search for Exercise">
+            <ul id="searchList">
+                <% exerciseDB.forEach(exerciseDB => { %>
+                <li exerciseId="<%= exerciseDB._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= exerciseDB.exercisename %> (<%= exerciseDB.equipment %>)</li>
+                <% }) %>
+                
+            </ul>
+        </form>
+        <button type="" onclick="showCustomExercise()">Custom Exercise</button>
+    </div>
+
+    <div class="customExercise" style="display: none">
+        <h2 class="info__title">Add Custom Exercise</h2>
+        <form action="/addCustomExercise" method="POST" class="customExerciseForm">
             <input type="text" name="exerciseName" placeholder="Exercise Name">
             <div class="dropdown">
                 <label for="type">Exercise Type:</label>
@@ -15,7 +30,7 @@
                 </select>
             </div>
             <div class="dropdown">
-                    <label for="equipment">Equipment:</label>
+                <label for="equipment">Equipment:</label>
                 <select name="equipment">
                     <option value="none">None</option>
                     <option value="barbell">Barbell</option>
@@ -31,6 +46,10 @@
                     <option value="other">Other</option>
                 </select>
             </div>
-            <button type="submit">Add Exercise</button>
+            
+            <button type="submit">Add Custom Exercise</button>
         </form>
+        <button onclick="showExerciseDB()"> &lt Back</button>
     </div>
+        
+</div>

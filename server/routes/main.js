@@ -5,7 +5,9 @@ const router = express.Router();
 
 const Auth = require('../models/auth');
 const Routine = require('../models/routine');
-const customExercise = require('../models/customexercise');
+const CustomExercise = require('../models/customexercise');
+const ExerciseDB = require('../models/exercise');
+const UserProgress = require('../models/userExerciseProgress');
 
 router.use(express.urlencoded({ extended: false }));
 
@@ -149,12 +151,12 @@ router.get("/login", (req, res) => {
 router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (req, res) => {
     try {
         const userId = req.query.userId;
-        const username = req.params.username;
-        // console.log('userId: ', userId);
-        // console.log('username: ', username);
+        
         // Find the user
         const user = await Auth.findById(userId);
 
+        // Find all exercises in db
+        // const exerciseDB = await ExerciseDB.find({});
 
         // If user not found, handle appropriately
         if (!user) {
@@ -165,7 +167,13 @@ router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (re
         const routines = await Routine.find({ user: userId });
 
         // Render the view with routines data
-        res.render('index', { title: 'Routines', user: user, routines: routines , isSelectedRoutine: false});
+        res.render('index', { 
+            title: 'Routines', 
+            user: user, 
+            routines: routines , 
+            isSelectedRoutine: false, 
+            exerciseDB: [] //temporary fix for the error
+        });
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
@@ -176,9 +184,10 @@ router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (re
 router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser, async (req, res) => {
     try {
         const userId = req.query.userId;
-        const username = req.params.username;
-        console.log('userId: ', userId);
-        console.log('username: ', username);
+
+        const exerciseDB = await ExerciseDB.find({});
+
+        // console.log('userId: ', userId);
         
         const routineId = req.params.routineId;
         const user = await Auth.findById(userId);
@@ -195,7 +204,14 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
         }
 
         
-        res.render('index', { title: selectedRoutine.routinename, user: user, selectedRoutine: selectedRoutine, routines: routines, isSelectedRoutine: true});
+        res.render('index', { 
+            title: selectedRoutine.routinename, 
+            user: user, 
+            selectedRoutine: selectedRoutine, 
+            routines: routines, 
+            isSelectedRoutine: true, 
+            exerciseDB: exerciseDB});
+            
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
@@ -241,7 +257,7 @@ router.post('/addRoutine', async (req, res) => {
         }
 
         const username = req.body.username;
-
+        
         await Routine.insertMany(routineData);
 
         res.redirect(`/user/${username}/routine?userId=${req.body.userId}`);
@@ -250,7 +266,39 @@ router.post('/addRoutine', async (req, res) => {
         console.log(error);
     }
     
-})
+});
+
+router.post('/user/:username/routine/:routineId/addExerciseToRoutine', async (req, res) => {
+    try {
+        const exerciseId = req.body.exerciseId;
+        const userId = req.body.userId;
+        const routineId = req.body.routineId;
+
+      // Find the exercise by ID
+        const exercise = await ExerciseDB.findById(exerciseId);
+        if (!exercise) {
+        return res.status(404).json({ error: 'Exercise not found' });
+        }
+
+      // You may need to adjust this part based on your application's logic
+      // For example, you may want to find the routine by user ID
+        const routine = await Routine.findOne({ _id: routineId, user: userId});
+        if (!routine) {
+        return res.status(404).json({ error: 'Routine not found' });
+        }
+
+      // Add the exercise to the routine's exercises array
+        routine.exercises.push(exercise);
+        await routine.save();
+
+        res.status(200).json({ message: 'Exercise added to routine successfully' });
+    } catch (error) {
+        console.error('Error adding exercise to routine:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 
 router.get("/logout", (req, res) => {
     res.clearCookie("jwt");

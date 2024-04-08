@@ -330,6 +330,10 @@ body {
         grid-gap: 10px;
         padding: 10px;
     }
+    .ExerciseForm {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+    }
     
     input[type=text] {
         width: 100%;
@@ -360,4 +364,21 @@ body {
 .AddExercise:hover {
     background-color: var(--yellow);
     cursor: pointer;
+}
+
+#searchInput {
+    padding: 5px;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+#searchList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#searchList li {
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 3px;
 }
