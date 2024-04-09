@@ -1,0 +1,77 @@
+<div class="info__addSet" style="display: none;" >
+    <h2 class="info__title">Add Set to <span id="exerciseNamePlaceholder"></span></h2>
+
+    <div id="addSetRepsSection" style="display: none;">
+        <form action="/addSet" method="POST">
+            <label for="weight">Weight(KG):</label>
+            <input id="weight" type="number">
+            <label for="reps">Reps:</label>
+            <input id="reps" type="number">
+            <br>
+            <input type="submit" class="sub" value="Add Routine">
+        </form>
+    </div>
+
+    <div id="addSetDurationSection" style="display: none;">
+        <form action="/addSet" method="POST">
+            <label for="duration">Duration:</label>
+            <input id="duration" type="time" step="1" min="00:00">
+            <br>
+            <input type="submit" class="sub" value="Add Routine">
+        </form>
+    </div>
+
+    <div id="addSetRepsOnlySection" style="display: none;">
+        <form action="/addSet" method="POST">
+            <label for="repsOnly">Reps:</label>
+            <input id="repsOnly" type="number">
+            <br>
+            <input type="submit" class="sub" value="Add Routine">
+        </form>
+    </div>
+
+    <div id="addSetDistanceDurationSection" style="display: none;">
+        <form action="/addSet" method="POST">
+            <label for="distance">Distance(KM):</label>
+            <input id="distance" type="number">
+            <label for="durationDistance">Duration:</label>
+            <input id="durationDistance" type="time" step="1" min="00:00">
+            <br>
+            <input type="submit" class="sub" value="Add Routine">
+        </form>
+    </div>
+
+    <div id="addSetRepsPlusKgSection" style="display: none;">
+        <form action="/addSet" method="POST">
+            <label for="weight">Weight(KG):</label>
+            <input id="weight" type="number">
+            <label for="reps">Reps:</label>
+            <input id="reps" type="number">
+            <br>
+            <input type="submit" class="sub" value="Add Routine">
+        </form>
+    </div>
+
+    <div id="addSetRepsMinusKgSection" style="display: none;">
+        <form action="/addSet" method="POST">
+            <label for="weight">Weight(-KG):</label>
+            <input id="weight" type="number">
+            <label for="reps">Reps:</label>
+            <input id="reps" type="number">
+            <br>
+            <input type="submit" class="sub" value="Add Routine">
+        </form>
+    </div>
+
+    <div id="addSetKgDistanceSection" style="display: none;">
+        <form action="/addSet" method="POST">
+            <label for="weight">Weight(+KG):</label>
+            <input id="weight" type="number">
+            <label for="distance">Distance(KM):</label>
+            <input id="distance" type="number">
+            <br>
+            <input type="submit" class="sub" value="Add Routine">
+        </form>
+    </div> 
+    
+</div>

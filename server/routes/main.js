@@ -260,6 +260,7 @@ router.post('/addRoutine', async (req, res) => {
         
         await Routine.insertMany(routineData);
 
+        // why not use routine/routineId? Because there could be a duplicate if using the routineData
         res.redirect(`/user/${username}/routine?userId=${req.body.userId}`);
     }
     catch (error){
@@ -268,12 +269,15 @@ router.post('/addRoutine', async (req, res) => {
     
 });
 
-router.post('/user/:username/routine/:routineId/addExerciseToRoutine', async (req, res) => {
+router.post('/addExerciseToRoutine', async (req, res) => {
     try {
         const exerciseId = req.body.exerciseId;
         const userId = req.body.userId;
         const routineId = req.body.routineId;
 
+
+        const auth = await Auth.findById(userId);
+        const username = auth.username;
       // Find the exercise by ID
         const exercise = await ExerciseDB.findById(exerciseId);
         if (!exercise) {
@@ -290,8 +294,10 @@ router.post('/user/:username/routine/:routineId/addExerciseToRoutine', async (re
       // Add the exercise to the routine's exercises array
         routine.exercises.push(exercise);
         await routine.save();
-
-        res.status(200).json({ message: 'Exercise added to routine successfully' });
+        
+        // Redirect to the selected routine page
+        res.redirect(`/user/${username}/routine/${routineId}?userId=${req.body.userId}`);
+        // res.status(200).json({ message: 'Exercise added to routine successfully' });
     } catch (error) {
         console.error('Error adding exercise to routine:', error);
         res.status(500).json({ error: 'Internal Server Error' });

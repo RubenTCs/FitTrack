@@ -5,7 +5,7 @@
             <input type="text" id="searchInput" placeholder="Search for Exercise">
             <ul id="searchList">
                 <% exerciseDB.forEach(exerciseDB => { %>
-                <li exerciseId="<%= exerciseDB._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= exerciseDB.exercisename %> (<%= exerciseDB.equipment %>)</li>
+                <li href='' exerciseId="<%= exerciseDB._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= exerciseDB.exercisename %> (<%= exerciseDB.equipment %>)</li>
                 <% }) %>
                 
             </ul>

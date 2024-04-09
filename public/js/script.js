@@ -1,10 +1,12 @@
 function addRoutineSidebar() {
     var addRoutineDiv = document.querySelector(".info__addRoutine");
     var addExerciseDiv = document.querySelector(".info__addExercise");
+    var addSetDiv = document.querySelector(".info__addSet");
 
     if (addRoutineDiv.style.display === 'none') {
         addRoutineDiv.style.display = 'block';
         addExerciseDiv.style.display = 'none'; 
+        addSetDiv.style.display = 'none';
     } else {
         addRoutineDiv.style.display = 'none';
     }
@@ -13,12 +15,51 @@ function addRoutineSidebar() {
 function addExerciseSidebar() {
     var addRoutineDiv = document.querySelector(".info__addRoutine");
     var addExerciseDiv = document.querySelector(".info__addExercise");
+    var addSetDiv = document.querySelector(".info__addSet");
 
     if (addExerciseDiv.style.display === 'none') {
         addRoutineDiv.style.display = 'none';
+        addSetDiv.style.display = 'none';
         addExerciseDiv.style.display = 'block'; 
     } else {
         addExerciseDiv.style.display = 'none';
+    }
+}
+
+function addSetSidebar(exerciseName, exerciseType) {
+    var addRoutineDiv = document.querySelector(".info__addRoutine");
+    var addExerciseDiv = document.querySelector(".info__addExercise");
+    var addSetDiv = document.querySelector(".info__addSet");
+
+    document.getElementById('exerciseNamePlaceholder').textContent = exerciseName;
+
+
+    if (addSetDiv.style.display === 'none') {
+        addRoutineDiv.style.display = 'none';
+        addExerciseDiv.style.display = 'none'; 
+        addSetDiv.style.display = 'block';
+
+    }
+
+    document.getElementById('addSetRepsSection').style.display = 'none';
+    document.getElementById('addSetDurationSection').style.display = 'none';
+    document.getElementById('addSetRepsOnlySection').style.display = 'none';
+
+
+    if (exerciseType === 'reps') {
+        document.getElementById('addSetRepsSection').style.display = 'block';
+    } else if (exerciseType === 'duration') {
+        document.getElementById('addSetDurationSection').style.display = 'block';
+    } else if (exerciseType === 'repsOnly') {
+        document.getElementById('addSetRepsOnlySection').style.display = 'block';
+    } else if (exerciseType === 'distanceDuration') {
+        document.getElementById('addSetDistanceDurationSection').style.display = 'block';
+    } else if (exerciseType === 'kgDistance') {
+        document.getElementById('addSetKgDistanceSection').style.display = 'block';
+    } else if (exerciseType === 'repsPlusKg') {
+        document.getElementById('addSetRepsPlusKgSection').style.display = 'block';
+    } else if (exerciseType === 'repsMinusKg') {
+        document.getElementById('addSetRepsMinusKgSection').style.display = 'block';
     }
 }
 
@@ -77,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function addExerciseToRoutine(exerciseId, routineId, userId) {
         console.log(exerciseId, routineId, userId)
       // Send a POST request to the server to update the routine with the selected exercise
-        fetch('/user/:username/routine/:routineId/addExercisetoRoutine', {
+        fetch('/addExerciseToRoutine', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -92,7 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!response.ok) {
             throw new Error('Failed to add exercise to routine');
         }
-        // Optionally, you can handle the successful response here
+        // console.log(response.url);
+        window.location.href = response.url;
         })
         .catch(error => {
         console.error('Error:', error);
@@ -100,3 +142,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
