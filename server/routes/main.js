@@ -196,7 +196,7 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
             return res.status(404).send('User not found');
         }
         
-        const selectedRoutine = await Routine.findById(routineId).populate('exercises');
+        const selectedRoutine = await Routine.findById(routineId).populate('exercises').populate('customexercises');
         console.log(selectedRoutine);
         const routines = await Routine.find({ user: userId });
 
