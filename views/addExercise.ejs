@@ -8,7 +8,7 @@
                     <li href='' exerciseId="<%= exerciseDB._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= exerciseDB.exercisename %> (<%= exerciseDB.equipment %>)</li>
                 <% }) %>
                 <% customExercise.forEach(customExercise => { %>
-                    <li href='' exerciseId="<%= customExercise._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= customExercise.exercisename %> (<%= customExercise.equipment %>) [Custom]</li>
+                    <li href='' customExerciseId="<%= customExercise._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= customExercise.exercisename %> (<%= customExercise.equipment %>) [Custom]</li>
                 <% }) %>
                 
             </ul>

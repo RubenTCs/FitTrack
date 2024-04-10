@@ -109,13 +109,14 @@ document.addEventListener('DOMContentLoaded', function() {
     for (var i = 0; i < li.length; i++) {
         li[i].addEventListener('click', function() {
         var exerciseId = this.getAttribute('exerciseId');
+        var customExerciseId = this.getAttribute('customExerciseId');
         var routineId = this.getAttribute('routineId');
         var userId = this.getAttribute('userId');
-        addExerciseToRoutine(exerciseId, routineId, userId);
+        addExerciseToRoutine(exerciseId, routineId, userId, customExerciseId);
         });
     }
 
-    function addExerciseToRoutine(exerciseId, routineId, userId) {
+    function addExerciseToRoutine(exerciseId, routineId, userId, customExerciseId) {
         console.log(exerciseId, routineId, userId)
       // Send a POST request to the server to update the routine with the selected exercise
         fetch('/addExerciseToRoutine', {
@@ -125,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         body: JSON.stringify({
             exerciseId: exerciseId,
+            customExerciseId: customExerciseId,
             routineId: routineId,
             userId: userId,
         })

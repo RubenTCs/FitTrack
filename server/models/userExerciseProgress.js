@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 
 const userProgressSchema = new mongoose.Schema({
     user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
     exercise: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Exercise' // Reference to predefined exercises
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exercise' // Reference to predefined exercises
     },
     customExercise: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'CustomExercise' // Reference to custom exercises
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CustomExercise' // Reference to custom exercises
     },
     sets: [{
         details: {
