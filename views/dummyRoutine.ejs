@@ -8,8 +8,8 @@
     
     <div class="dummyRoutine__content">
         <div class="dummyRoutine__exercise">
-            <% selectedRoutine.exercises.forEach(exercise => { %>
-
+            
+            <% combinedExercises.forEach(exercise => { %>
                 <table id="exerciseTable">
                     <tr>
                         <th colspan="<% if (exercise.type === 'duration' || exercise.type === 'repsOnly') { %>

@@ -16,6 +16,11 @@ const ExerciseSchema = new Schema({
         enum: ['reps', 'repsOnly', 'repsPlusKg', 'repsMinusKg', 'duration', 'distanceDuration', 'kgDistance'],
         required: true
     },
-    });
+    muscle: {
+        type: String,
+        enum: ['chest', 'tricep', 'bicep', 'back', 'shoulder', 'abs', 'hamstring', 'glute', 'calf', 'cardio', 'other'],
+        required: true
+    },
+});
 
 module.exports = mongoose.model('Exercise', ExerciseSchema);

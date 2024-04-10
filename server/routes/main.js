@@ -172,7 +172,8 @@ router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (re
             user: user, 
             routines: routines , 
             isSelectedRoutine: false, 
-            exerciseDB: [] //temporary fix for the error
+            exerciseDB: [], //temporary fix for the error
+            customExercise: []
         });
     } catch (error) {
         console.log(error);
@@ -186,7 +187,8 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
         const userId = req.query.userId;
 
         const exerciseDB = await ExerciseDB.find({});
-        
+        const customExercise = await CustomExercise.find({ user: userId });
+
         const routineId = req.params.routineId;
         const user = await Auth.findById(userId);
 
@@ -195,13 +197,14 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
         }
         
         const selectedRoutine = await Routine.findById(routineId).populate('exercises');
+
         const routines = await Routine.find({ user: userId });
 
         if (!selectedRoutine || selectedRoutine.user.toString() !== userId) {
             return res.status(404).send('Routine not found');
         }
         
-        
+        const combinedExercises = exerciseDB.concat(customExercise);
         
         res.render('index', { 
             title: selectedRoutine.routinename, 
@@ -209,7 +212,9 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
             selectedRoutine: selectedRoutine, 
             routines: routines, 
             isSelectedRoutine: true, 
-            exerciseDB: exerciseDB
+            exerciseDB: exerciseDB,
+            customExercise: customExercise,
+            combinedExercises: combinedExercises
         });
             
     } catch (error) {
@@ -269,6 +274,7 @@ router.post('/addRoutine', async (req, res) => {
     
 });
 
+// Add Exercise to Routine
 router.post('/addExerciseToRoutine', async (req, res) => {
     try {
         const exerciseId = req.body.exerciseId;
@@ -279,7 +285,11 @@ router.post('/addExerciseToRoutine', async (req, res) => {
         const auth = await Auth.findById(userId);
         const username = auth.username;
       // Find the exercise by ID
-        const exercise = await ExerciseDB.findById(exerciseId);
+        let exercise = await ExerciseDB.findById(exerciseId);
+
+        if (!exercise) {
+            exercise = await CustomExercise.findById(exerciseId);
+        }
         if (!exercise) {
         return res.status(404).json({ error: 'Exercise not found' });
         }
@@ -304,6 +314,26 @@ router.post('/addExerciseToRoutine', async (req, res) => {
     }
 });
 
+router.post('/addCustomExercise', async (req, res) => {
+    try {
+        const customExerciseData = {
+            exercisename: req.body.exercisename,
+            user: req.body.userId,
+            equipment: req.body.equipment,
+            type: req.body.type,
+            muscle: req.body.muscle,
+        }
+        const username = req.body.username;
+
+
+        await CustomExercise.insertMany(customExerciseData);
+
+        res.redirect(`back`);
+    } catch (error) {
+        console.error('Error adding custom exercise:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 router.get("/logout", (req, res) => {
