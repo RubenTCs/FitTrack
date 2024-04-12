@@ -1,0 +1,12 @@
+<div class="info__addRoutine" style="display: none;">
+    <h2 class="info__title">Add Routine </h2>
+    <form action="/addRoutine" method="POST">
+        <input type="text" name="routinename" id="routineName" placeholder="Routine Name" autocomplete="off">
+        <input type="text" name="description" id="routineDesc" placeholder="Write a description">
+        <input type="hidden" id="userId" name="userId" value="<%= user._id %>">
+        <input type="hidden" name="username" value="<%= user.username %>">
+        <br>
+        <input type="submit" class="sub" value="Add Routine">
+    </form>
+    
+</div>

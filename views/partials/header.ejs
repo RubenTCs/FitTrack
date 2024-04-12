@@ -1,5 +1,5 @@
 <header class="header">
-    <a href="/routine" class="header__logo">
+    <a href="/user/<%= user.username %>/routine?userId=<%= user._id %>" class="header__logo">
         <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="mask0_212_4" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="12" y="22" width="21" height="56">
             <path d="M12.9353 22.5708H32.9353V77.3708H12.9353V22.5708Z" fill="white"/>
@@ -17,19 +17,24 @@
             <path d="M81.4678 57.9003L80.3428 59.0753V61.2003H78.4094V52.8003H80.3428V56.7253L84.0636 52.8003H86.2219L82.7428 56.5461L86.4261 61.2003H84.1594L81.4678 57.9003Z" fill="#FBAF41"/>
             </svg>
             
-        </a>
+    </a>
 
     <nav class="header__nav">
         <ul>
             <li>
-                <a href="/routine   " class="">Routine</a>
+                <a href="/user/<%= user.username %>/routine?userId=<%= user._id %>" class="nav">Routine</a>
             </li>
             <li>
-                <a href="/profile" class="">Profile</a>
+                <a href="/<%= user.username %>/profile" class="nav">Profile</a>
             </li>
             <li>
-                <a href="/about" class="">About</a>
+                <a href="/<%= user.username %>/about" class="nav">About</a>
             </li>
         </ul>
+        <a href="/logout" class="logoutBtn">Logout</a>
     </nav>
+            
+    
+            
+    
 </header>

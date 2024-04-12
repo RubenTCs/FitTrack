@@ -1,0 +1,75 @@
+<div class="info__addExercise" style="display: none;">
+    <div class="dbExercise">
+        <form class="ExerciseForm">
+            <h2 class="info__title">Add Exercise</h2>
+            <input type="text" id="searchInput" placeholder="Search for Exercise">
+            <ul id="searchList">
+                <% exerciseDB.forEach(exerciseDB => { %>
+                    <li href='' exerciseId="<%= exerciseDB._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= exerciseDB.exercisename %> (<%= exerciseDB.equipment %>)</li>
+                <% }) %>
+                <% customExercise.forEach(customExercise => { %>
+                    <li href='' customExerciseId="<%= customExercise._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= customExercise.exercisename %> (<%= customExercise.equipment %>) [Custom]</li>
+                <% }) %>
+                
+            </ul>
+        </form>
+        <button type="" onclick="showCustomExercise()">Custom Exercise</button>
+    </div>
+
+    <div class="customExercise" style="display: none">
+        <h2 class="info__title">Add Custom Exercise</h2>
+        <form action="/addCustomExercise" method="POST" class="customExerciseForm" userId="<%= user._id %>">
+            <input type="text" name="exercisename" placeholder="Exercise Name">
+            <div class="dropdown">
+                <label for="muscle">Muscle:</label>
+                <select name="muscle">
+                    <option value="chest">Chest</option>
+                    <option value="tricep">Tricep</option>
+                    <option value="bicep">Bicep</option>
+                    <option value="back">Back</option>
+                    <option value="shoulder">Shoulder</option>
+                    <option value="abs">Abs</option>
+                    <option value="hamstring">Hamstring</option>
+                    <option value="glute">Glute</option>
+                    <option value="calf">Calf</option>
+                    <option value="cardio">Cardio</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label for="type">Exercise Type:</label>
+                <select id="type" name="type">
+                    <option value="reps">Reps</option>
+                    <option value="repsOnly">Reps Only (Bodyweight)</option>
+                    <option value="repsPlusKg">Reps + Kg (Weighted Bodyweight)</option>
+                    <option value="repsMinusKg">Reps - Kg (Assisted Bodyweight)</option>
+                    <option value="duration">Duration</option>
+                    <option value="distanceDuration">Distance + Duration</option>
+                    <option value="kgDistance">Kg + Distance</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label for="equipment">Equipment:</label>
+                <select name="equipment">
+                    <option value="none">None</option>
+                    <option value="barbell">Barbell</option>
+                    <option value="dumbbell">Dumbbell</option>
+                    <option value="kettlebell">Kettlebell</option>
+                    <option value="machine">Machine</option>
+                    <option value="bodyweight">Bodyweight</option>
+                    <option value="cable">Cable</option>
+                    <option value="medicine ball">Medicine Ball</option>
+                    <option value="plate">Plate</option>
+                    <option value="suspension">Suspension</option>
+                    <option value="bands">Bands</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <button type="submit">Add Custom Exercise</button>
+            <input type="hidden" id="userId" name="userId" value="<%= user._id %>">
+            <input type="hidden" name="username" value="<%= user.username %>">
+        </form>
+        <button onclick="showExerciseDB()"> &lt Back</button>
+    </div>
+        
+</div>
