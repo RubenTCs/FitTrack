@@ -90,6 +90,7 @@ body {
         text-decoration: underline;
     }
 }
+  
 
 /* sign up, ini juga*/
 .signup {
@@ -382,35 +383,42 @@ body {
     border: 1px solid #ccc;
     margin-bottom: 3px;
 }
-/* CSS untuk menambahkan jarak di antara setiap paragraf */
-p {
-    margin-bottom: 20px; /* Menambahkan jarak 20px di bagian bawah setiap paragraf */
-    text-align: left; /* Posisikan teks paragraf ke kiri */
-    margin-left: 20px; /* Menambahkan margin kiri sebesar 20px */
-    max-width: 600px; /* Mengatur lebar maksimum teks */
-  }
-  
-  /* CSS untuk memposisikan judul utama di tengah dan menurunkannya */
-  h1 {
-    text-align: center; /* Posisikan teks di tengah */
-    margin-top: 15vh; /* Menurunkan judul sekitar 15% dari posisinya */
-    margin-bottom: 15vh; /* Menambahkan jarak 15% di bagian bawah judul */
-    color: rgb(223, 155, 52); /* Mengatur warna teks */
-  }
-  
-  /* CSS untuk memposisikan judul kedua di tengah dan menurunkannya */
-  h2 {
-    text-align: left; /* Posisikan teks h2 ke kiri */
-    margin-left: 20px; /* Menambahkan margin kiri sebesar 20px */
-  }
-  
-  /* CSS untuk gambar */
-  .image-right {
-    float: right; /* Menempatkan gambar pada sisi kanan */
-    margin-left: 20px; /* Menambahkan margin kiri sebesar 20px */
-    margin-bottom: 20px; /* Menambahkan jarak di bagian bawah gambar */
-    max-width: calc(100% - 640px); /* Menyesuaikan lebar maksimum gambar */
-    width: auto; /* Mengatur lebar gambar agar dapat menyesuaikan */
-    height: auto; /* Mengatur tinggi gambar agar dapat menyesuaikan */
-  }
-  
+
+/* about page */
+.about-page {
+    p {
+        margin-bottom: 20px; 
+        text-align: left; 
+        margin-left: 5%; 
+        margin-right: 5%; 
+        max-width: 90%; 
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 0vh;
+        margin-bottom: 2vh;
+        color: rgb(223, 155, 52);
+        background-image: url('https://25070129.fs1.hubspotusercontent-eu1.net/hubfs/25070129/Images%20-%20Blog/Vignettes/57.svg');
+        background-size: cover;
+        padding: 10vw;
+    }
+
+    h2 {
+        text-align: left;
+        color: rgb(223, 155, 52);
+        margin-left: 5%;
+        max-width: 90%;
+    }
+
+    .image-right {
+        float: right;
+        margin-top: 10px;
+        margin-left: 20px;
+        margin-right: 30px;
+        margin-bottom: 20px;
+        max-width: 50%;
+        width: 700px;
+        height: 400px;
+    }
+}
