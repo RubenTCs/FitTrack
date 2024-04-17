@@ -306,7 +306,7 @@ router.post('/addExerciseToRoutine', async (req, res) => {
             if (!routine) {
                 return res.status(404).json({ error: 'Routine not found' });
             }
-            
+
             const newExercise = {
                 _id: exerciseId,
                 sets: []
@@ -373,7 +373,7 @@ router.post('/addCustomExercise', async (req, res) => {
 // addset
 router.post('/user/:username/routine/:routineId/addSet', async (req, res) => {
     try {
-        const { weight, reps, distance, duration, exerciseIndex } = req.body;
+        const { exerciseId, weight, reps, distance, duration, exerciseIndex } = req.body;
         const { routineId } = req.params;
         
         const setData = {
@@ -382,14 +382,19 @@ router.post('/user/:username/routine/:routineId/addSet', async (req, res) => {
             distance: distance,
             duration: duration,
         }
-        console.log(duration)
+        // console.log(duration)
         const routine = await Routine.findById(routineId);
-        if (!routine) {
-            return res.status(404).json({ message: 'Routine not found' });
+        const exercise = routine.exercises.find(ex => ex._id.toString() === exerciseId);
+        console.log(exercise)
+        if(!exercise){
+            exerciseInstance = routine.customexercises[exerciseIndex];
+            console.log(exerciseInstance)
+            
+        } else {
+            exerciseInstance = routine.exercises[exerciseIndex];
         }
-
-        const exerciseInstance = routine.exercises[exerciseIndex];
-
+        
+        console.log(exerciseInstance)
         exerciseInstance.sets.push(setData);
 
         await routine.save();
