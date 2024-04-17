@@ -1,3 +1,4 @@
+//useless
 const mongoose = require('mongoose');
 
 const userProgressSchema = new mongoose.Schema({
@@ -6,21 +7,23 @@ const userProgressSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    routine: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Routine',
+    },
     exercise: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exercise' // Reference to predefined exercises
+        ref: 'Exercise'
     },
     customExercise: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CustomExercise' // Reference to custom exercises
+        ref: 'CustomExercise'
     },
     sets: [{
-        details: {
-            kg: { type: Number, default: 0 }, // Weight in kg, default to 0
-            reps: { type: Number, default: 0 }, // Number of repetitions, default to 0
-            distance: { type: Number, default: 0 }, // Distance in meters, default to 0
-            duration: { type: Number, default: 0 } // seconds, default to 0
-        }
+            kg: { type: Number }, 
+            reps: { type: Number }, 
+            distance: { type: Number }, 
+            duration: { type: Number }
     }]
 });
 

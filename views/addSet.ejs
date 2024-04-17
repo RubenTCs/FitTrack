@@ -1,76 +1,88 @@
 <div class="info__addSet" style="display: none;" >
     <h2 class="info__title">Add Set to <span id="exerciseNamePlaceholder"></span></h2>
 
-    <div id="addSetRepsSection" style="display: none;">
-        <form action="/addSet" method="POST">
-            <label for="weight">Weight(KG):</label>
-            <input id="weight" type="number">
-            <label for="reps">Reps:</label>
-            <input id="reps" type="number">
-            <br>
-            <input type="submit" class="sub" value="Add Routine">
-        </form>
-    </div>
-
     <div id="addSetDurationSection" style="display: none;">
-        <form action="/addSet" method="POST">
+        <form action="/user/<%= user.username %>/routine/<%= selectedRoutine._id %>/addSet" method="POST">
             <label for="duration">Duration:</label>
-            <input id="duration" type="time" step="1" min="00:00">
+            <input id="duration" name="duration" type="time" step="1" min="00:01" placeholder="mm:ss">
+            <input type="hidden" id="addSetExerciseId" name="exerciseId">
+            <input type="hidden" id="exerciseIndex" name="exerciseIndex">
             <br>
-            <input type="submit" class="sub" value="Add Routine">
+            <input type="submit" class="sub" >
         </form>
     </div>
-
-    <div id="addSetRepsOnlySection" style="display: none;">
-        <form action="/addSet" method="POST">
-            <label for="repsOnly">Reps:</label>
-            <input id="repsOnly" type="number">
+    <div id="addSetRepsSection" style="display: none;">
+        <form action="/user/<%= user.username %>/routine/<%= selectedRoutine._id %>/addSet" method="POST">
+            <label for="weight">Weight(Kg):</label>
+            <input id="weight" name="weight" type="number" placeholder="Kg" step="0.01" min="0.01" required>
+            <label for="reps">Reps:</label>
+            <input id="reps" name="reps" type="number" placeholder="Reps" min="1" required>
+            <input type="hidden" id="addSetExerciseId" name="exerciseId">
+            <input type="hidden" id="exerciseIndex" name="exerciseIndex">
             <br>
-            <input type="submit" class="sub" value="Add Routine">
+            <input type="submit" class="sub" >
+        </form>
+    </div>
+    <div id="addSetRepsOnlySection" style="display: none;">
+        <form action="/user/<%= user.username %>/routine/<%= selectedRoutine._id %>/addSet" method="POST">
+            <label for="reps">Reps:</label>
+            <input id="reps" name="reps" type="number" placeholder="Reps" min="1" required>
+            <input type="hidden" id="addSetExerciseId" name="exerciseId">
+            <input type="hidden" id="exerciseIndex" name="exerciseIndex">
+            <br>
+            <input type="submit" class="sub" >
         </form>
     </div>
 
     <div id="addSetDistanceDurationSection" style="display: none;">
-        <form action="/addSet" method="POST">
-            <label for="distance">Distance(KM):</label>
-            <input id="distance" type="number">
+        <form action="/user/<%= user.username %>/routine/<%= selectedRoutine._id %>/addSet" method="POST">
+            <label for="distance">Distance(Km):</label>
+            <input id="distance" name="distance" type="number" placeholder="Km" min="1" required>
             <label for="durationDistance">Duration:</label>
-            <input id="durationDistance" type="time" step="1" min="00:00">
+            <input id="durationDistance" name="duration" type="time" step="1" min="00:01" placeholder="mm:ss" required>
+            <input type="hidden" id="addSetExerciseId" name="exerciseId">
+            <input type="hidden" id="exerciseIndex" name="exerciseIndex">
             <br>
-            <input type="submit" class="sub" value="Add Routine">
+            <input type="submit" class="sub" >
         </form>
     </div>
 
     <div id="addSetRepsPlusKgSection" style="display: none;">
-        <form action="/addSet" method="POST">
-            <label for="weight">Weight(KG):</label>
-            <input id="weight" type="number">
+        <form action="/user/<%= user.username %>/routine/<%= selectedRoutine._id %>/addSet" method="POST">
+            <label for="weight">Weight(Kg):</label>
+            <input id="weight" name="weight" type="number" placeholder="Kg" min="1" required>
             <label for="reps">Reps:</label>
-            <input id="reps" type="number">
+            <input id="reps" name="reps" type="number" placeholder="Reps" min="1" required>
+            <input type="hidden" id="addSetExerciseId" name="exerciseId">
+            <input type="hidden" id="exerciseIndex" name="exerciseIndex">
             <br>
-            <input type="submit" class="sub" value="Add Routine">
+            <input type="submit" class="sub" >
         </form>
     </div>
 
     <div id="addSetRepsMinusKgSection" style="display: none;">
-        <form action="/addSet" method="POST">
-            <label for="weight">Weight(-KG):</label>
-            <input id="weight" type="number">
+        <form action="/user/<%= user.username %>/routine/<%= selectedRoutine._id %>/addSet" method="POST">
+            <label for="weight">Weight(-Kg):</label>
+            <input id="weight" name="weight" type="number" placeholder="-KG" max="0" required>
             <label for="reps">Reps:</label>
-            <input id="reps" type="number">
+            <input id="reps" name="reps" type="number" placeholder="Reps" min="1" required>
+            <input type="hidden" id="addSetExerciseId" name="exerciseId">
+            <input type="hidden" id="exerciseIndex" name="exerciseIndex">
             <br>
-            <input type="submit" class="sub" value="Add Routine">
+            <input type="submit" class="sub" >
         </form>
     </div>
 
     <div id="addSetKgDistanceSection" style="display: none;">
-        <form action="/addSet" method="POST">
-            <label for="weight">Weight(+KG):</label>
-            <input id="weight" type="number">
-            <label for="distance">Distance(KM):</label>
-            <input id="distance" type="number">
+        <form action="/user/<%= user.username %>/routine/<%= selectedRoutine._id %>/addSet" method="POST">
+            <label for="weight">Weight(+Kg):</label>
+            <input id="weight" name="weight" type="number" placeholder="+Kg" min="1" required>
+            <label for="distance">Distance(Km):</label>
+            <input id="distance" name="distance" type="number" placeholder="Km" min="" required>
+            <input type="hidden" id="addSetExerciseId" name="exerciseId">
+            <input type="hidden" id="exerciseIndex" name="exerciseIndex">
             <br>
-            <input type="submit" class="sub" value="Add Routine">
+            <input type="submit" class="sub" >
         </form>
     </div> 
     

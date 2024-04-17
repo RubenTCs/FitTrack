@@ -26,14 +26,29 @@ function addExerciseSidebar() {
     }
 }
 
-function addSetSidebar(exerciseName, exerciseType) {
+function addSetSidebar(exerciseName, exerciseType, exerciseId, exerciseIndex) {
     var addRoutineDiv = document.querySelector(".info__addRoutine");
     var addExerciseDiv = document.querySelector(".info__addExercise");
     var addSetDiv = document.querySelector(".info__addSet");
+    
+    console.log(exerciseName, exerciseType, exerciseId);
 
+    // nyari form yang ada di dalam div info__addSet
+    document.querySelectorAll('form').forEach(form => {
+        const exerciseIdInput = form.querySelector('input[name="exerciseId"]');
+        const exerciseIndexInput = form.querySelector('input[name="exerciseIndex"]');
+        
+        if (exerciseIdInput && exerciseIndexInput) {
+            exerciseIdInput.value = exerciseId;
+            exerciseIndexInput.value = exerciseIndex;
+        }
+    });
+
+    // Update exercise name placeholder and display the relevant section
     document.getElementById('exerciseNamePlaceholder').textContent = exerciseName;
-
-
+    document.getElementById('addSetExerciseId').value = exerciseId;
+    document.getElementById('exerciseIndex').value = exerciseIndex;
+    
     if (addSetDiv.style.display === 'none') {
         addRoutineDiv.style.display = 'none';
         addExerciseDiv.style.display = 'none'; 
@@ -116,32 +131,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function addExerciseToRoutine(exerciseId, routineId, userId, customExerciseId) {
-        console.log(exerciseId, routineId, userId)
-      // Send a POST request to the server to update the routine with the selected exercise
-        fetch('/addExerciseToRoutine', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            exerciseId: exerciseId,
-            customExerciseId: customExerciseId,
-            routineId: routineId,
-            userId: userId,
-        })
-        })
-        .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to add exercise to routine');
+    async function addExerciseToRoutine(exerciseId, routineId, userId, customExerciseId) {
+        try {
+            const response = await fetch('/addExerciseToRoutine', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    exerciseId: exerciseId,
+                    customExerciseId: customExerciseId,
+                    routineId: routineId,
+                    userId: userId,
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to add exercise to routine');
+            }
+    
+            // Extract URL from response
+            const { url } = response;
+    
+            // Redirect to the new URL
+            window.location.href = url;
+        } catch (error) {
+            console.error('Error:', error);
+            // Optionally, you can display an error message to the user here
         }
-        // console.log(response.url);
-        window.location.href = response.url;
-        })
-        .catch(error => {
-        console.error('Error:', error);
-        // Optionally, you can display an error message to the user here
-        });
     }
 });
 

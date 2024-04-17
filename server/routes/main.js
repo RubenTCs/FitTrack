@@ -8,6 +8,7 @@ const Routine = require('../models/routine');
 const CustomExercise = require('../models/customexercise');
 const ExerciseDB = require('../models/exercise');
 const UserProgress = require('../models/userExerciseProgress');
+const exercise = require('../models/exercise');
 
 router.use(express.urlencoded({ extended: false }));
 
@@ -173,9 +174,11 @@ router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (re
             routines: routines , 
             isSelectedRoutine: false, 
             exerciseDB: [], //temporary fix for the error
-            customExercise: []
+            customExercise: [],
+            selectedRoutine: [],
+            userProgress: [],
         });
-    } catch (error) {
+    } catch (error) { 
         console.log(error);
         res.status(500).send('Internal Server Error');
     }
@@ -192,19 +195,25 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
         const routineId = req.params.routineId;
         const user = await Auth.findById(userId);
 
+        const userProgress = await UserProgress.find({ user: userId});
+
+        // console.log('userProgress: ', userProgress);
+
         if (!user) {
             return res.status(404).send('User not found');
         }
         
-        const selectedRoutine = await Routine.findById(routineId).populate('exercises').populate('customexercises');
-        console.log(selectedRoutine);
+        const selectedRoutine = await Routine.findById(routineId)
+        .populate({ path: 'exercises._id', model: 'Exercise' })
+        .populate({ path: 'customexercises._id', model: 'CustomExercise' });
+
+        // console.log(selectedRoutine);
+
         const routines = await Routine.find({ user: userId });
 
         if (!selectedRoutine || selectedRoutine.user.toString() !== userId) {
             return res.status(404).send('Routine not found');
         }
-        
-        // selectedRoutine.exercises = [...exerciseDB, ...customExercise];
 
         res.render('index', { 
             title: selectedRoutine.routinename, 
@@ -214,6 +223,7 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
             isSelectedRoutine: true, 
             exerciseDB: exerciseDB,
             customExercise: customExercise,
+            userProgress: userProgress,
         });
             
     } catch (error) {
@@ -281,33 +291,50 @@ router.post('/addExerciseToRoutine', async (req, res) => {
         const userId = req.body.userId;
         const routineId = req.body.routineId;
 
-
         const auth = await Auth.findById(userId);
         const username = auth.username;
 
         if (exerciseId){
             const exercise = await ExerciseDB.findById(exerciseId);
+
             if (!exercise) {
                 return res.status(404).json({ error: 'Exercise not found' });
             }
 
             const routine = await Routine.findOne({ _id: routineId, user: userId});
+
             if (!routine) {
                 return res.status(404).json({ error: 'Routine not found' });
             }
-            routine.exercises.push(exercise);
+            
+            const newExercise = {
+                _id: exerciseId,
+                sets: []
+            }
+
+            routine.exercises.push(newExercise);
+
             await routine.save();
 
         } else if(customExerciseId){
             const customExercise = await CustomExercise.findById(customExerciseId);
+
             if (!customExercise) {
                 return res.status(404).json({ error: 'Custom Exercise not found' });
             }
+
             const routine = await Routine.findOne({ _id: routineId, user: userId});
+
             if (!routine) {
                 return res.status(404).json({ error: 'Routine not found' });
             }
-            routine.customexercises.push(customExercise);
+
+            const newExercise = {
+                _id: customExerciseId,
+                sets: []
+            }
+            
+            routine.customexercises.push(newExercise);
             await routine.save();
         }
         
@@ -320,6 +347,7 @@ router.post('/addExerciseToRoutine', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 router.post('/addCustomExercise', async (req, res) => {
     try {
@@ -338,6 +366,36 @@ router.post('/addCustomExercise', async (req, res) => {
         res.redirect(`back`);
     } catch (error) {
         console.error('Error adding custom exercise:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// addset
+router.post('/user/:username/routine/:routineId/addSet', async (req, res) => {
+    try {
+        const { weight, reps, distance, duration, exerciseIndex } = req.body;
+        const { routineId } = req.params;
+        
+        const setData = {
+            kg: weight,
+            reps: reps,
+            distance: distance,
+            duration: duration,
+        }
+        console.log(duration)
+        const routine = await Routine.findById(routineId);
+        if (!routine) {
+            return res.status(404).json({ message: 'Routine not found' });
+        }
+
+        const exerciseInstance = routine.exercises[exerciseIndex];
+
+        exerciseInstance.sets.push(setData);
+
+        await routine.save();
+        res.redirect('back')
+    } catch (error) {
+        console.error('Error adding progress:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
