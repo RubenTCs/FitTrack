@@ -162,3 +162,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function deleteRoutine(routineId, username, userId) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        fetch(`/deleteRoutine/${routineId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            console.error('Failed to delete item:', response.statusText);
+            alert('Failed to delete item');
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        });
+    }
+}
+
+function deleteExerciseFromRoutine(exerciseId, routineId, userId, username, index) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        fetch(`/deleteExerciseFromRoutine/${routineId}/${index}`, {
+            method: 'DELETE',
+            
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine/${routineId}?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            console.error('Failed to delete item:', response.statusText);
+            alert('Failed to delete item');
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        });
+    }
+}

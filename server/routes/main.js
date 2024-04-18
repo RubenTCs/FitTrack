@@ -405,6 +405,62 @@ router.post('/user/:username/routine/:routineId/addSet', async (req, res) => {
     }
 });
 
+// delete routine
+router.delete('/deleteRoutine/:routineId', async (req, res) => {
+    try {
+        const routineId = req.params.routineId;
+        const routine = await Routine.findByIdAndDelete(routineId);
+
+        if (!routine) {
+            return res.status(404).json({ error: 'Routine not found' });
+        }
+
+        res.status(200).json({ message: 'Routine deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting routine:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.delete('/deleteExerciseFromRoutine/:routineId/:exerciseIndex', async (req, res) => {
+    try {
+        const { routineId, exerciseIndex } = req.params;
+
+        const routine = await Routine.findById(routineId);
+
+        if (!routine) {
+            return res.status(404).json({ error: 'Routine not found' });
+        }
+
+        let exercise = routine.exercises[exerciseIndex];
+
+        // If the exercise does not exist in the exercises array, try to find it in the customexercises array
+        if (!exercise && routine.customexercises.length > exerciseIndex) {
+            exercise = routine.customexercises[exerciseIndex];
+        }
+
+        if (!exercise) {
+            return res.status(404).json({ message: 'Exercise not found in the routine' });
+        }
+
+        // Remove the exercise at the specified index
+        if (exerciseIndex < routine.exercises.length) {
+            routine.exercises.splice(exerciseIndex, 1);
+        } else {
+            routine.customexercises.splice(exerciseIndex - routine.exercises.length, 1);
+        }
+
+        // Save the updated routine
+        await routine.save();
+
+        res.status(200).json({ message: 'Exercise deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting exercise:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// delete exercise from routine
 
 router.get("/logout", (req, res) => {
     res.clearCookie("jwt");
