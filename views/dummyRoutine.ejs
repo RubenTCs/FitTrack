@@ -5,12 +5,11 @@
             <h1 id="routineName"><%= selectedRoutine.routinename %></h1>
             <p> <%= selectedRoutine.description %></p>
         </div>
-        <div>
-            
+        <div class="routineBtnpos">
+            <a class="routineBtn" onclick="deleteRoutine('<%= selectedRoutine._id %>')">Delete Routine</a>
         </div>
-        <hr>
     </div>
-    
+    <hr>
     <div class="dummyRoutine__content">
         <div class="dummyRoutine__exercise">
             <% selectedRoutine.exercises.forEach((exercise, index) => { %>

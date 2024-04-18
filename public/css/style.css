@@ -7,7 +7,7 @@
     --darkgray: #333;
     --gray: #666;;
     --lightgray: #808183;
-    --red: 
+    --red: #D6212E
 }
 
 
@@ -285,6 +285,8 @@ body {
 }
 
 .dummyRoutine__title {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
@@ -294,6 +296,22 @@ body {
         font-weight: 400;
     }   
 }
+
+.routineBtnpos {
+    justify-self: center;
+    align-self: center;
+}
+
+.routineBtn {
+    text-decoration: none;
+    color: var(--black);
+    padding: 10px;
+    border: var(--lightgray) 1px solid;
+    border-radius: 10px;
+    background-color: var(--red);
+    cursor: pointer;
+}
+
 .dummyRoutine__content {
     display: grid;
     grid-template-columns: 3fr 1fr;
