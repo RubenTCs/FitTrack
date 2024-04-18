@@ -422,6 +422,7 @@ router.delete('/deleteRoutine/:routineId', async (req, res) => {
     }
 });
 
+//delete exercise from routine
 router.delete('/deleteExerciseFromRoutine/:routineId/:exerciseIndex', async (req, res) => {
     try {
         const { routineId, exerciseIndex } = req.params;
@@ -460,7 +461,22 @@ router.delete('/deleteExerciseFromRoutine/:routineId/:exerciseIndex', async (req
     }
 });
 
-// delete exercise from routine
+// delete custom exercise
+router.delete('/deleteCustomExercise/:customExerciseId', async (req, res) => {
+    try {
+        const customExerciseId = req.params.customExerciseId;
+        const customExercise = await CustomExercise.findByIdAndDelete(customExerciseId);
+
+        if (!customExercise) {
+            return res.status(404).json({ error: 'Custom Exercise not found' });
+        }
+
+        res.status(200).json({ message: 'Custom Exercise deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting custom exercise:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 router.get("/logout", (req, res) => {
     res.clearCookie("jwt");

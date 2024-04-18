@@ -58,7 +58,7 @@
                     <tr>
                         <th colspan="3">
                             <button onclick="addSetSidebar('<%= exercise.exercisename %>', '<%= exercise._id.type %>', '<%= exercise._id._id %>', '<%= index %>')">+ Add Set</button>
-                            <button onclick="deleteExerciseFromRoutine('<%= exercise._id._id %>', '<%= selectedRoutine._id %>', '<%= user._id %>', '<%= user.username %>' ,'<%= index %>')">Delete Exercise</button>
+                            <button onclick="deleteExerciseFromRoutine( '<%= selectedRoutine._id %>', '<%= user._id %>', '<%= user.username %>' ,'<%= index %>')">Delete Exercise</button>
                         </th><%=  %>
                     </tr>
                 </table>
@@ -120,7 +120,7 @@
                     <tr>
                         <th colspan="3">
                             <button onclick="addSetSidebar('<%= customexercise._id.exercisename %>', '<%= customexercise._id.type %>', '<%= customexercise._id._id %>',  '<%= index %>')">+ Add Set</button>
-                            <button onclick="deleteExerciseFromRoutine('<%= customexercise._id.exercisename %>', '<%= customexercise._id.type %>', '<%= customexercise._id._id %>',  '<%= index %>')">Delete Exercise</button>
+                            <button onclick="deleteExerciseFromRoutine( '<%= customexercise._id.type %>', '<%= customexercise._id._id %>',  '<%= index %>')">Delete Exercise</button>
                         </th>
                     </tr>
                 </table>

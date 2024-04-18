@@ -27,6 +27,14 @@ body {
     box-sizing: border-box;
 }
 
+
+span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 /* login buat ulang design nya, coba suruh marcia*/
 .signin {
     display: flex;
@@ -393,10 +401,17 @@ body {
 #searchList {
     list-style-type: none;
     padding: 0;
+
 }
 
 #searchList li {
     padding: 5px;
     border: 1px solid #ccc;
     margin-bottom: 3px;
+}
+
+.customExList{
+    display: grid;
+    grid-template-columns: 1fr 14px;
+    grid-gap: 10px
 }
