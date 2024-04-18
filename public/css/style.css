@@ -7,7 +7,7 @@
     --darkgray: #333;
     --gray: #666;;
     --lightgray: #808183;
-    --red: 
+    --red: #D6212E
 }
 
 
@@ -26,6 +26,14 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
+
+
+span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 /* login buat ulang design nya, coba suruh marcia*/
 .signin {
@@ -285,6 +293,8 @@ body {
 }
 
 .dummyRoutine__title {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
@@ -294,6 +304,22 @@ body {
         font-weight: 400;
     }   
 }
+
+.routineBtnpos {
+    justify-self: center;
+    align-self: center;
+}
+
+.routineBtn {
+    text-decoration: none;
+    color: var(--black);
+    padding: 10px;
+    border: var(--lightgray) 1px solid;
+    border-radius: 10px;
+    background-color: var(--red);
+    cursor: pointer;
+}
+
 .dummyRoutine__content {
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -314,8 +340,15 @@ body {
         padding: 8px;
         text-align: center;
     }
+    .setIndex {
+        display: grid;
+        grid-template-columns: 20px 1fr;
     
+    
+    }
 }
+
+
 
 /* right side bar */
 .info {
@@ -375,10 +408,17 @@ body {
 #searchList {
     list-style-type: none;
     padding: 0;
+
 }
 
 #searchList li {
     padding: 5px;
     border: 1px solid #ccc;
     margin-bottom: 3px;
+}
+
+.customExList{
+    display: grid;
+    grid-template-columns: 1fr 14px;
+    grid-gap: 10px
 }
