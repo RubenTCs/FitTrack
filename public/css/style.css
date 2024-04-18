@@ -340,8 +340,15 @@ span {
         padding: 8px;
         text-align: center;
     }
+    .setIndex {
+        display: grid;
+        grid-template-columns: 20px 1fr;
     
+    
+    }
 }
+
+
 
 /* right side bar */
 .info {
