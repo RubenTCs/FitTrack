@@ -427,32 +427,31 @@ router.delete('/deleteExerciseFromRoutine/:routineId/:exerciseIndex', async (req
     try {
         const { routineId, exerciseIndex } = req.params;
 
-        const routine = await Routine.findById(routineId);
+            const routine = await Routine.findById(routineId);
 
-        if (!routine) {
-            return res.status(404).json({ error: 'Routine not found' });
-        }
+            if (!routine) {
+                return res.status(404).json({ error: 'Routine not found' });
+            }
+            let exercise = routine.exercises[exerciseIndex];
 
-        let exercise = routine.exercises[exerciseIndex];
+            // If the exercise does not exist in the exercises array, try to find it in the customexercises array
+            if (!exercise && routine.customexercises.length > exerciseIndex) {
+                exercise = routine.customexercises[exerciseIndex];
+            }
+    
+            if (!exercise) {
+                return res.status(404).json({ message: 'Exercise not found in the routine' });
+            }
+    
+            // Remove the exercise at the specified index
+            if (exerciseIndex < routine.exercises.length) {
+                routine.exercises.splice(exerciseIndex, 1);
+            } else {
+                routine.customexercises.splice(exerciseIndex - routine.exercises.length, 1);
+            }
 
-        // If the exercise does not exist in the exercises array, try to find it in the customexercises array
-        if (!exercise && routine.customexercises.length > exerciseIndex) {
-            exercise = routine.customexercises[exerciseIndex];
-        }
-
-        if (!exercise) {
-            return res.status(404).json({ message: 'Exercise not found in the routine' });
-        }
-
-        // Remove the exercise at the specified index
-        if (exerciseIndex < routine.exercises.length) {
-            routine.exercises.splice(exerciseIndex, 1);
-        } else {
-            routine.customexercises.splice(exerciseIndex - routine.exercises.length, 1);
-        }
-
-        // Save the updated routine
-        await routine.save();
+            await routine.save();
+        
 
         res.status(200).json({ message: 'Exercise deleted successfully' });
     } catch (error) {
@@ -475,6 +474,22 @@ router.delete('/deleteCustomExercise/:customExerciseId', async (req, res) => {
     } catch (error) {
         console.error('Error deleting custom exercise:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.delete('/deleteCustomExercise/:routineId/:customExerciseId', async (req, res) => {
+    const { routineId, customExerciseId } = req.params;
+    
+    const result = await Routine.updateMany(
+        { _id: routineId },
+        { $pull: { customexercises: { _id: customExerciseId } } }
+    );
+
+    // Check if any documents were modified
+    if (result.nModified > 0) {
+        res.status(200).json({ message: 'Custom exercises deleted from routine successfully' });
+    } else {
+        res.status(404).json({ message: 'Custom exercises not found in the routine' });
     }
 });
 

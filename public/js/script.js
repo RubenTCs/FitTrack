@@ -235,5 +235,26 @@ function deleteCustomExercise(customExerciseId, userId, username, routineId) {
             console.error('Error deleting item:', error);
             alert('Error deleting item');
         });
+        fetch(`/deleteCustomExercise/${routineId}/${customExerciseId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine/${routineId}?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            console.error('Failed to delete item:', response.statusText);
+            // alert('Failed to delete item');
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        }); 
     }
+    
 }
