@@ -26,14 +26,29 @@ function addExerciseSidebar() {
     }
 }
 
-function addSetSidebar(exerciseName, exerciseType) {
+function addSetSidebar(exerciseName, exerciseType, exerciseId, exerciseIndex) {
     var addRoutineDiv = document.querySelector(".info__addRoutine");
     var addExerciseDiv = document.querySelector(".info__addExercise");
     var addSetDiv = document.querySelector(".info__addSet");
+    
+    console.log(exerciseName, exerciseType, exerciseId);
 
+    // nyari form yang ada di dalam div info__addSet
+    document.querySelectorAll('form').forEach(form => {
+        const exerciseIdInput = form.querySelector('input[name="exerciseId"]');
+        const exerciseIndexInput = form.querySelector('input[name="exerciseIndex"]');
+        
+        if (exerciseIdInput && exerciseIndexInput) {
+            exerciseIdInput.value = exerciseId;
+            exerciseIndexInput.value = exerciseIndex;
+        }
+    });
+
+    // Update exercise name placeholder and display the relevant section
     document.getElementById('exerciseNamePlaceholder').textContent = exerciseName;
-
-
+    document.getElementById('addSetExerciseId').value = exerciseId;
+    document.getElementById('exerciseIndex').value = exerciseIndex;
+    
     if (addSetDiv.style.display === 'none') {
         addRoutineDiv.style.display = 'none';
         addExerciseDiv.style.display = 'none'; 
@@ -116,32 +131,160 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function addExerciseToRoutine(exerciseId, routineId, userId, customExerciseId) {
-        console.log(exerciseId, routineId, userId)
-      // Send a POST request to the server to update the routine with the selected exercise
-        fetch('/addExerciseToRoutine', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            exerciseId: exerciseId,
-            customExerciseId: customExerciseId,
-            routineId: routineId,
-            userId: userId,
-        })
-        })
-        .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to add exercise to routine');
+    async function addExerciseToRoutine(exerciseId, routineId, userId, customExerciseId) {
+        try {
+            const response = await fetch('/addExerciseToRoutine', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    exerciseId: exerciseId,
+                    customExerciseId: customExerciseId,
+                    routineId: routineId,
+                    userId: userId,
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to add exercise to routine');
+            }
+    
+            // Extract URL from response
+            const { url } = response;
+    
+            // Redirect to the new URL
+            window.location.href = url;
+        } catch (error) {
+            console.error('Error:', error);
+            // Optionally, you can display an error message to the user here
         }
-        // console.log(response.url);
-        window.location.href = response.url;
-        })
-        .catch(error => {
-        console.error('Error:', error);
-        // Optionally, you can display an error message to the user here
-        });
     }
 });
 
+function deleteRoutine(routineId, username, userId) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        fetch(`/deleteRoutine/${routineId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            console.error('Failed to delete item:', response.statusText);
+            alert('Failed to delete item');
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        });
+    }
+}
+
+function deleteExerciseFromRoutine(routineId, userId, username, index) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        fetch(`/deleteExerciseFromRoutine/${routineId}/${index}`, {
+            method: 'DELETE',
+            
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine/${routineId}?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            console.error('Failed to delete item:', response.statusText);
+            alert('Failed to delete item');
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        });
+    }
+}
+
+function deleteCustomExercise(customExerciseId, userId, username, routineId) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        fetch(`/deleteCustomExercise/${customExerciseId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine/${routineId}?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            console.error('Failed to delete item:', response.statusText);
+            alert('Failed to delete item');
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        });
+        
+        fetch(`/deleteCustomExercise/${routineId}/${customExerciseId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine/${routineId}?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            // Idk why it shows error 404 in the console but it still works
+            console.error('Failed to delete item:', response.statusText);
+            // alert('Failed to delete item');
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        }); 
+    }
+}
+
+function deleteSet(routineId, userId, username, exerciseId, exerciseIndex, setIndex) {
+    console.log(routineId, userId, username, exerciseId, exerciseIndex, setIndex);
+    if (confirm('Are you sure you want to delete this item?')) {
+        fetch(`/deleteSet/${routineId}/${exerciseId}/${exerciseIndex}/${setIndex}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+            // Optionally handle success (e.g., update UI)
+            console.log('Item deleted successfully');
+            // Redirect to another page if needed
+            window.location.href = `/user/${username}/routine/${routineId}?userId=${userId}`;
+            } else {
+            // Handle non-200 status codes
+            // Idk why it shows error 404 in the console but it still works
+            console.error('Failed to delete item:', response.statusText);
+            // alert('Failed to delete item');
+            // need to manually refresh the page
+            window.location.href = `/user/${username}/routine/${routineId}?userId=${userId}`;
+            }
+        })
+        .catch(error => {
+          // Handle network errors
+            console.error('Error deleting item:', error);
+            alert('Error deleting item');
+        });
+    }
+}

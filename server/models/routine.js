@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const setSchema = new Schema({
+    kg: { type: Number},
+    reps: { type: Number },
+    distance: { type: Number },
+    duration: { type: String }
+});
+
 const routineSchema = new Schema({
     routinename: {
         type: String,
@@ -13,12 +20,18 @@ const routineSchema = new Schema({
         required: true
     },
     exercises: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Exercise', 
+        _id: {
+            type: Schema.Types.ObjectId,
+            ref: 'Exercise'
+        },
+        sets: [setSchema] // Array of sets for each exercise
     }],
     customexercises: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'CustomExercise' // Reference to the CustomExercise model
+        _id: {
+            type: Schema.Types.ObjectId,
+            ref: 'CustomExercise'
+        },
+        sets: [setSchema] // Array of sets for each custom exercise
     }]
 });
 
