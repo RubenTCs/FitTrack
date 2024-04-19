@@ -1,17 +1,36 @@
-<div class="signup container">
-    <h1>Signup</h1>
-
-    <form action="/signup" method="POST">
-        <input type="text" name="username" placeholder="Username">
-        <br>
-        <input type="email" name="email" placeholder="Email">
-        <br>
-        <input type="password" name="password" placeholder="Password" autocomplete="off">
-        <br>
-        <input type="submit" class="sub">
-
-        <div class="signupBtn">
-            <a href="/">Back to login page</a>
-        </div>
-    </form>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="signup-body">
+    <div class="signup container">
+        <h1>Signup</h1>
+        <form action="/signup" method="POST">
+            <div class="input-container signup-input">
+                <i class="icon fas fa-user"></i>
+                <input type="text" name="name" placeholder="Name" autocomplete="off">
+            </div>
+            <br>
+            <div class="input-container signup-input">
+                <i class="icon fas fa-envelope"></i>
+                <input type="text" name="email" placeholder="Email" autocomplete="off">
+            </div>
+            <br>
+            <div class="input-container signup-input">
+                <input type="password" name="password" id="password" placeholder="Password" autocomplete="off">
+                <i class="icon fas fa-lock"></i>
+                <i class="fas fa-eye icon" id="togglePassword"></i>
+                <i class="fas fa-eye-slash icon" id="togglePassword"></i>
+            </div>
+            <br>
+            <input type="submit" class="sub">
+            <div class="signupBtn">
+                <a href="/">Back to login page</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
