@@ -7,7 +7,7 @@
     --darkgray: #333;
     --gray: #666;;
     --lightgray: #808183;
-    --red: #D6212E
+    --red: #ff5656;
 }
 
 
@@ -15,7 +15,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 12px;
     line-height: 1.7;
     color: #333;
     background-color: var(--white);
@@ -36,134 +36,98 @@ span {
 
 
 /* login buat ulang design nya, coba suruh marcia*/
-.signin {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.signup-body,
+.login-body {
+    background-image: url('img/bg.jpg'); 
+    background-size: cover;
+    background-position: center;
     height: 100vh;
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
-    .container {
-        max-width: 400px;
-        width: 100%;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        background-color: #fff;
-        border: 5px solid rgb(111, 70, 23);
-        text-align: center;
-    }
-    
-    .container h1 {
-        margin-top: 20px;
-        margin-bottom: 30px;
-        color: rgb(111, 70, 23);
-    }
-    
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    
-    .sub {
-        width: 100%;
-        padding: 10px;
-        background-color: rgb(223, 155, 52);
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    
-    .sub:hover {
-        background-color: rgb(200, 140, 30);
-    }
-    
-    .signup {
-        text-align: center;
-        margin-top: 20px;
-    }
-    
-    .signup a {
-        color: rgb(111, 70, 23);
-        text-decoration: none;
-    }
-    
-    .signup a:hover {
-        text-decoration: underline;
-    }
+    margin: 0;
+    padding: 0;
+}
+.login-container,
+.container.signup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border: 5px solid orange;
+    text-align: center;
+    color: orange;
 }
 
-/* sign up, ini juga*/
-.signup {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
-    
-    .container {
-        max-width: 400px;
-        width: 100%;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        background-color: #fff;
-        border: 5px solid rgb(111, 70, 23);
-        text-align: center; 
-    }
-    
-    h1 {
-        margin-top: 20px;
-        margin-bottom: 30px;
-        color: rgb(111, 70, 23); 
-    }
-    
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    
-    .sub {
-        width: 100%;
-        padding: 10px;
-        background-color: rgb(223, 155, 52);
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    
-    .sub:hover {
-        background-color: rgb(200, 140, 30);
-    }
-    
-    .signupBtn {
-        margin-top: 20px;
-    }
-    
-    .signupBtn a {
-        color: rgb(111, 70, 23);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    
-    .signupBtn a:hover {
-        color: rgb(200, 140, 30);
-    }
-    
+.container input[type="text"],
+.container input[type="password"],
+.container input[type="email"],
+.container input[type="submit"] {
+    width: calc(100% - 22px);
+    padding: 15px;
+    padding-left: 40px;
+    padding-right: 40px;
+    margin: 2px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #ffe4b2;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.sub {
+    background-color: rgb(223, 155, 52);
+    color: orange;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.sub:hover {
+    background-color: rgb(200, 140, 30);
+}
+.login-container h1,
+.container.signup h1 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: orange;
+}
+
+.input-container {
+    position: relative;
+}
+
+.input-container input[type="email"],
+.input-container input[type="password"] {
+    padding-right: 0px;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    color: #555;
+    cursor: pointer;
+    font-size: 15px;
+}
+#togglePassword {
+    left: 300px;
+}
+.loginBtn h3 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.signupBtn {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-family: 'Poppins', sans-serif; /* Menggunakan font Poppins */
+    font-weight: 400; /* Ketebalan font */
+    font-size: 14px; /* Ukuran font */
+    color: #511cf1; /* Warna teks */
 }
 
 .header {
@@ -229,6 +193,10 @@ span {
     padding: 20px;
     text-align: center;
     bottom: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
 
 .footer__text {
