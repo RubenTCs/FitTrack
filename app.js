@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.set('layout', './layouts/main')
 app.set('view engine', 'ejs');
 app.use('/', require('./server/routes/main'))
+
 // app.use('/auth', require('./server/routes/auth'))
 
 
