@@ -175,7 +175,6 @@ router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (re
             exerciseDB: [], //temporary fix for the error
             customExercise: [],
             selectedRoutine: [],
-            userProgress: [],
         });
     } catch (error) { 
         console.log(error);
@@ -194,9 +193,6 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
         const routineId = req.params.routineId;
         const user = await Auth.findById(userId);
 
-        const userProgress = await UserProgress.find({ user: userId});
-
-        // console.log('userProgress: ', userProgress);
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -222,7 +218,6 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
             isSelectedRoutine: true, 
             exerciseDB: exerciseDB,
             customExercise: customExercise,
-            userProgress: userProgress,
         });
             
     } catch (error) {
