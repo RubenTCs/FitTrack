@@ -7,7 +7,6 @@ const Auth = require('../models/auth');
 const Routine = require('../models/routine');
 const CustomExercise = require('../models/customexercise');
 const ExerciseDB = require('../models/exercise');
-const UserProgress = require('../models/userExerciseProgress');
 const exercise = require('../models/exercise');
 
 router.use(express.urlencoded({ extended: false }));
