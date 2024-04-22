@@ -1,3 +1,26 @@
+function sortExerciseByName() {
+    var list = document.getElementById("searchList"); // Mendapatkan daftar exercise
+    var items = list.getElementsByTagName("li"); // Mendapatkan daftar item dalam daftar exercise
+
+    // Mengonversi HTMLCollection menjadi array agar bisa menggunakan metode sort
+    var itemsArray = Array.from(items);
+
+    itemsArray.sort(function(a, b) {
+        var textA = a.textContent.trim().toUpperCase(); // Mengambil teks nama exercise dan mengonversi ke huruf besar
+        var textB = b.textContent.trim().toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; // Melakukan sorting berdasarkan urutan alfabet
+    });
+
+    // Menghapus semua elemen dari daftar
+    while (list.firstChild) {
+        list.removeChild(list.firstChild);
+    }
+
+    // Menambahkan elemen kembali ke daftar sesuai dengan urutan sorting yang baru
+    itemsArray.forEach(function(item) {
+        list.appendChild(item);
+    });
+}
 function addRoutineSidebar() {
     var addRoutineDiv = document.querySelector(".info__addRoutine");
     var addExerciseDiv = document.querySelector(".info__addExercise");

@@ -387,6 +387,6 @@ span {
 
 .customExList{
     display: grid;
-    grid-template-columns: 1fr 14px;
-    grid-gap: 10px
+    grid-template-columns: 5fr 1fr;
+    grid-gap: 10px;
 }
