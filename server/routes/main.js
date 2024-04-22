@@ -2,7 +2,6 @@ const express = require('express');
 const jwt = require("jsonwebtoken");
 const bcryptjs = require('bcryptjs');
 const router = express.Router();
-const nodemailer = require('nodemailer');
 
 const Auth = require('../models/auth');
 const Routine = require('../models/routine');
@@ -87,17 +86,15 @@ router.get('',  (req, res) => {
 router.post("/signup", async (req, res) => {
     try {
         const checkEmail = await Auth.findOne({ email: req.body.email });
-        const checkName = await Auth.findOne({ username: req.body.name }); // Ubah ke req.body.name
+        const checkName = await Auth.findOne({ username: req.body.username });
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
-        } 
-        else if (checkName){ // Menggunakan else if
-            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>'); // Hapus tanda titik (.) di sini
-        }
-        else {
-            const token = jwt.sign({ username: req.body.name }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
+        } if (checkName){
+            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>.');
+        }else {
+            const token = jwt.sign({ username: req.body.username }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
             const data = {
-                username: req.body.name,
+                username: req.body.username,
                 email: req.body.email,
                 password: await hashPass(req.body.password),
                 token: token 
@@ -366,56 +363,6 @@ router.post('/addCustomExercise', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
-
-
-
-// forgot password
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'gavrielj30@gmail.com',
-        pass: 'qacu yffp zggc nykz'
-    }
-});
-
-// Rute untuk menampilkan halaman forgot password
-router.get('/forgotpassword', (req, res) => {
-    res.render('forgotpassword', { title: 'Forgot Password', showHeader: false });
-});
-
-// Rute untuk menangani permintaan reset password
-router.post('/forgotpassword', async (req, res) => {
-    try {
-        const { email } = req.body;
-        // Di sini Anda akan mengirim email reset password ke alamat email yang diberikan
-        // Misalnya, Anda dapat menggunakan Nodemailer untuk mengirim email
-
-        const mailOptions = {
-            from: 'gavrielj30@gmail.com',
-            to: email,
-            subject: 'Reset Password Email',
-            text: 'Reset Password'
-        };
-
-        // Mengirim email
-        transporter.sendMail(mailOptions, function (err, info) {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('Failed to send reset password email');
-            } else {
-                console.log('Email Terkirim' + info.response);
-                res.send('<script>alert("Password reset email sent. Please check your email."); window.location="/forgotpassword"</script>');
-            }
-        });
-    } catch (error) {
-        console.error('Error during forgot password:', error);
-        res.status(500).send('An error occurred during forgot password');
-    }
-
-});
-
-
 
 // addset
 router.post('/user/:username/routine/:routineId/addSet', async (req, res) => {
