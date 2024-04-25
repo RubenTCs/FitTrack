@@ -1,31 +1,30 @@
 <div class="info__addExercise" style="display: none;">
     <div class="dbExercise">
-        <div class="ExerciseForm">
+        <form class="ExerciseForm">
             <h2 class="info__title">Add Exercise</h2>
             <input type="text" id="searchInput" placeholder="Search for Exercise">
-            <button onclick="sortExerciseByName()">Sort by Name</button>
             <ul id="searchList">
                 <% exerciseDB.forEach(exerciseDB => { %>
                     <li exerciseId="<%= exerciseDB._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>"><%= exerciseDB.exercisename %> (<%= exerciseDB.equipment %>)</li>
                 <% }) %>
                 <% customExercise.forEach(customExercise => { %>
-                        <li class="customExList" customExerciseId="<%= customExercise._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>">
+                    <div class="customExList">
+                        <li customExerciseId="<%= customExercise._id %>" routineId="<%= selectedRoutine._id %>" userId="<%= user._id %>">
                         <%= customExercise.exercisename %> (<%= customExercise.equipment %>) [Custom] 
-                        <span onclick="deleteCustomExercise('<%= customExercise._id %>', '<%= user._id %>', '<%= user.username %>', '<%= selectedRoutine._id %>')">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683418 14.0976 1.31658 14.0976 1.70711 13.7071L0.292893 12.2929ZM13.7071 1.70711C14.0976 1.31658 14.0976 0.683418 13.7071 0.292894C13.3166 -0.0976306 12.6834 -0.0976305 12.2929 0.292894L13.7071 1.70711ZM1.70711 0.292893C1.31658 -0.097631 0.683418 -0.0976311 0.292893 0.292893C-0.097631 0.683417 -0.0976311 1.31658 0.292893 1.70711L1.70711 0.292893ZM12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L12.2929 13.7071ZM1.70711 13.7071L13.7071 1.70711L12.2929 0.292894L0.292893 12.2929L1.70711 13.7071ZM0.292893 1.70711L12.2929 13.7071L13.7071 12.2929L1.70711 0.292893L0.292893 1.70711Z" fill="#111827"/>
-                            </svg>
-                        </span>
-                        </li>
-                    
-                    
+                    </li>
+                    <span onclick="deleteCustomExercise('<%= customExercise._id %>', '<%= user._id %>', '<%= user.username %>', '<%= selectedRoutine._id %>')">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683418 14.0976 1.31658 14.0976 1.70711 13.7071L0.292893 12.2929ZM13.7071 1.70711C14.0976 1.31658 14.0976 0.683418 13.7071 0.292894C13.3166 -0.0976306 12.6834 -0.0976305 12.2929 0.292894L13.7071 1.70711ZM1.70711 0.292893C1.31658 -0.097631 0.683418 -0.0976311 0.292893 0.292893C-0.097631 0.683417 -0.0976311 1.31658 0.292893 1.70711L1.70711 0.292893ZM12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L12.2929 13.7071ZM1.70711 13.7071L13.7071 1.70711L12.2929 0.292894L0.292893 12.2929L1.70711 13.7071ZM0.292893 1.70711L12.2929 13.7071L13.7071 12.2929L1.70711 0.292893L0.292893 1.70711Z" fill="#111827"/>
+                        </svg>
+                    </span>
+                    </div>
                     
                 <% }) %>
                 
             </ul>
-        </div>
+        </form>
         <button type="" onclick="showCustomExercise()">Custom Exercise</button>
-        
+        <button onclick="sortExerciseByName()">Sort by Name</button>
     </div>
 
     <div class="customExercise" style="display: none">
@@ -83,5 +82,30 @@
         </form>
         <button onclick="showExerciseDB()"> &lt Back</button>
     </div>
-        
 </div>
+
+<script>
+    function sortExerciseByName() {
+        var list = document.getElementById("searchList"); // Mendapatkan daftar exercise
+        var items = list.getElementsByTagName("li"); // Mendapatkan daftar item dalam daftar exercise
+    
+        // Mengonversi HTMLCollection menjadi array agar bisa menggunakan metode sort
+        var itemsArray = Array.from(items);
+    
+        itemsArray.sort(function(a, b) {
+            var textA = a.textContent.trim().toUpperCase(); // Mengambil teks nama exercise dan mengonversi ke huruf besar
+            var textB = b.textContent.trim().toUpperCase();
+            return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; // Melakukan sorting berdasarkan urutan alfabet
+        });
+    
+        // Menghapus semua elemen dari daftar
+        while (list.firstChild) {
+            list.removeChild(list.firstChild);
+        }
+    
+        // Menambahkan elemen kembali ke daftar sesuai dengan urutan sorting yang baru
+        itemsArray.forEach(function(item) {
+            list.appendChild(item);
+        });
+    }
+    </script>

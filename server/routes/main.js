@@ -1,12 +1,15 @@
 const express = require('express');
 const jwt = require("jsonwebtoken");
 const bcryptjs = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const router = express.Router();
+const nodemailer = require('nodemailer');
 
 const Auth = require('../models/auth');
 const Routine = require('../models/routine');
 const CustomExercise = require('../models/customexercise');
 const ExerciseDB = require('../models/exercise');
+//const UserProgress = require('../models/userExerciseProgress');
 const exercise = require('../models/exercise');
 
 router.use(express.urlencoded({ extended: false }));
@@ -86,15 +89,17 @@ router.get('',  (req, res) => {
 router.post("/signup", async (req, res) => {
     try {
         const checkEmail = await Auth.findOne({ email: req.body.email });
-        const checkName = await Auth.findOne({ username: req.body.username });
+        const checkName = await Auth.findOne({ username: req.body.name }); // Ubah ke req.body.name
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
-        } if (checkName){
-            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>.');
-        }else {
-            const token = jwt.sign({ username: req.body.username }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
+        } 
+        else if (checkName){ // Menggunakan else if
+            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>'); // Hapus tanda titik (.) di sini
+        }
+        else {
+            const token = jwt.sign({ username: req.body.name }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
             const data = {
-                username: req.body.username,
+                username: req.body.name,
                 email: req.body.email,
                 password: await hashPass(req.body.password),
                 token: token 
@@ -361,6 +366,95 @@ router.post('/addCustomExercise', async (req, res) => {
     } catch (error) {
         console.error('Error adding custom exercise:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+//forgot password
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'gavrielj30@gmail.com',
+        pass: 'qacu yffp zggc nykz'
+    }
+});
+
+// Rute untuk menampilkan halaman forgot password
+router.get('/forgotpassword', (req, res) => {
+    res.render('forgotpassword', { title: 'Forgot Password', showHeader: false });
+});
+
+// Rute untuk menangani permintaan reset password
+router.post('/forgotpassword', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // URL halaman reset password di localhost:3000
+        const resetPasswordUrl = 'http://localhost:3000/resetpassword';
+
+        // Di sini Anda akan mengirim email reset password ke alamat email yang diberikan
+        // Misalnya, Anda dapat menggunakan Nodemailer untuk mengirim email
+
+        const mailOptions = {
+            from: 'gavrielj30@gmail.com',
+            to: email,
+            subject: 'Reset Password Email',
+            // Menambahkan URL ke dalam pesan email
+            html: `Click <a href="${resetPasswordUrl}">here</a> to reset your password.`,
+        };
+
+        // Mengirim email
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Failed to send reset password email');
+            } else {
+                console.log('Email Terkirim' + info.response);
+                res.send('<script>alert("Password reset email sent. Please check your email."); window.location="/forgotpassword"</script>');
+            }
+        });
+    } catch (error) {
+        console.error('Error during forgot password:', error);
+        res.status(500).send('An error occurred during forgot password');
+    }
+
+});
+
+//reset password
+router.get('/resetpassword', (req, res) => {
+    res.render('resetpassword', { title: 'Reset Password', showHeader: false });
+});
+
+router.post('/resetpassword', async (req, res) => {
+    try {
+        const { email, newPassword, confirmPassword } = req.body;
+
+        // Periksa apakah newPassword sama dengan confirmPassword
+        if (newPassword !== confirmPassword) {
+            return res.status(400).send('New password and confirm password do not match');
+        }
+
+        // Cari pengguna berdasarkan email
+        const user = await Auth.findOne({ email });
+
+        // Periksa apakah pengguna ditemukan
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Enkripsi password baru
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Atur password baru untuk pengguna
+        user.password = hashedPassword;
+
+        // Simpan perubahan ke dalam database
+        await user.save();
+
+        // Kirim respons sukses
+        res.send('Password has been reset successfully');
+    } catch (error) {
+        console.error('Error during password reset:', error);
+        res.status(500).send(`An error occurred during password reset: ${error.message}`);
     }
 });
 
