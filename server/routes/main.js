@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require("jsonwebtoken");
 const bcryptjs = require('bcryptjs');
-const bcrypt = require('bcrypt');
+
 const router = express.Router();
 const nodemailer = require('nodemailer');
 
@@ -442,7 +442,7 @@ router.post('/resetpassword', async (req, res) => {
         }
 
         // Enkripsi password baru
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const hashedPassword = await hashPass(newPassword);
 
         // Atur password baru untuk pengguna
         user.password = hashedPassword;
