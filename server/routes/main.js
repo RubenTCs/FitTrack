@@ -65,16 +65,16 @@ function requireCorrectUser(req, res, next) {
 router.get('/',  (req, res) => {
 
     try{
-        res.render('login', {title: 'Login', showHeader: false});
+        res.redirect('/login');
     } catch (error){
         console.log(error);
     }
-}); 
+});
 //default Route
 router.get('',  (req, res) => {
 
     try{
-        res.render('login', {title: 'Login', showHeader: false});
+        res.redirect('/login');
     } catch (error){
         console.log(error);
     }
@@ -109,7 +109,7 @@ router.post("/signup", async (req, res) => {
 }); 
 
 router.get("/signup", (req, res) => {
-    res.render("signup", { title: "Register", showHeader: false});
+    res.render("signup", { title: "Sign Up Page", showHeader: false});
 });
 
 //login
@@ -144,7 +144,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-    res.render("login", { title: "Login", showHeader: false });
+    res.render("login", { title: "Login Page", showHeader: false });
 });
 
 //Routine
