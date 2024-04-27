@@ -152,6 +152,125 @@ router.get("/login", (req, res) => {
     res.render("login", { title: "Login", showHeader: false });
 });
 
+//forgot password
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'gavrielj30@gmail.com',
+        pass: 'qacu yffp zggc nykz'
+    }
+});
+
+// Rute untuk menampilkan halaman forgot password
+router.get('/forgotpassword', (req, res) => {
+    res.render('forgotpassword', { title: 'Forgot Password', showHeader: false });
+});
+
+// Buat nyimpan token reset password
+const resetPasswordTokens = new Map();
+// Untuk reset password
+const generateToken = async () => {
+    try {
+        const token = await bcryptjs.hash(Date.now().toString(), 10); // Hashing a timestamp for randomness
+        return token;
+    } catch (error) {
+        console.error('Error generating token:', error);
+        throw error;
+    }
+};
+
+// Rute untuk menangani permintaan reset password
+router.post('/forgotpassword', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Generate token untuk reset password
+        const resetToken = await generateToken();
+        const expirationTime = Date.now() + (15 * 60 * 1000); // 15 minutes in milliseconds
+
+        resetPasswordTokens.set(email, { token: resetToken, expiresAt: expirationTime });
+
+        // URL halaman reset password di localhost:3000
+        const resetPasswordUrl = `http://localhost:3000/resetpassword?email=${email}&token=${resetToken}`;
+        const mailOptions = {
+            from: 'gavrielj30@gmail.com',
+            to: email,
+            subject: 'Reset Password Email',
+            // Menambahkan URL ke dalam pesan email
+            html: `This link will expired in 15 minutes. <br>
+            Click <a href="${resetPasswordUrl}">here</a> to reset your password.`,
+        };
+
+        // Mengirim email
+        if (!Auth.findOne({email})){
+            res.send('<script>alert("The email has been sent, if there is an account with that email"); window.location="/forgotpassword"</script>');
+        } else {
+            transporter.sendMail(mailOptions, function (err, info) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send('Failed to send reset password email');
+                } else {
+                    console.log('Email Terkirim' + info.response);
+                    res.send('<script>alert("Password reset email sent. Please check your email."); window.location="/forgotpassword"</script>');
+                }
+            });
+        }
+        
+    } catch (error) {
+        console.error('Error during forgot password:', error);
+        res.status(500).send('An error occurred during forgot password');
+    }
+
+});
+
+//reset password
+router.get('/resetpassword', (req, res) => {
+    const { email, token } = req.query;
+    console.log(email, token);
+    const storedToken = resetPasswordTokens.get(email);
+    if (!storedToken || storedToken.token !== token || storedToken.expiresAt < Date.now()) {
+        return res.status(400).send('Invalid or expired reset token');
+    }
+
+
+    res.render('resetpassword', { title: 'Reset Password', showHeader: false, email: email});
+});
+
+router.post('/resetpassword', async (req, res) => {
+    try {
+        const {newPassword, confirmPassword } = req.body;
+        const email = req.query.email;
+        console.log(email)
+        // Periksa apakah newPassword sama dengan confirmPassword
+        if (newPassword !== confirmPassword) {
+            return res.send('<script>alert("New password and confirm password do not match."); window.location="/forgotpassword";</script>');
+        }
+
+        // Cari pengguna berdasarkan email
+        const user = await Auth.findOne({ email });
+
+        // Periksa apakah pengguna ditemukan
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Enkripsi password baru
+        const hashedPassword = await hashPass(newPassword);
+
+        // Atur password baru untuk pengguna
+        user.password = hashedPassword;
+
+        // Simpan perubahan ke dalam database
+        await user.save();
+
+        // Kirim respons sukses
+        res.send('<script>alert("Password has been reset successfully. You can now log in with your new password."); window.location="/login";</script>');
+    } catch (error) {
+        console.error('Error during password reset:', error);
+        res.status(500).send(`An error occurred during password reset: ${error.message}`);
+    }
+});
+
 //Routine
 router.get('/user/:username/routine', requireAuth, requireCorrectUser, async (req, res) => {
     try {
@@ -369,94 +488,7 @@ router.post('/addCustomExercise', async (req, res) => {
     }
 });
 
-//forgot password
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'gavrielj30@gmail.com',
-        pass: 'qacu yffp zggc nykz'
-    }
-});
 
-// Rute untuk menampilkan halaman forgot password
-router.get('/forgotpassword', (req, res) => {
-    res.render('forgotpassword', { title: 'Forgot Password', showHeader: false });
-});
-
-// Rute untuk menangani permintaan reset password
-router.post('/forgotpassword', async (req, res) => {
-    try {
-        const { email } = req.body;
-
-        // URL halaman reset password di localhost:3000
-        const resetPasswordUrl = 'http://localhost:3000/resetpassword';
-
-        // Di sini Anda akan mengirim email reset password ke alamat email yang diberikan
-        // Misalnya, Anda dapat menggunakan Nodemailer untuk mengirim email
-
-        const mailOptions = {
-            from: 'gavrielj30@gmail.com',
-            to: email,
-            subject: 'Reset Password Email',
-            // Menambahkan URL ke dalam pesan email
-            html: `Click <a href="${resetPasswordUrl}">here</a> to reset your password.`,
-        };
-
-        // Mengirim email
-        transporter.sendMail(mailOptions, function (err, info) {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('Failed to send reset password email');
-            } else {
-                console.log('Email Terkirim' + info.response);
-                res.send('<script>alert("Password reset email sent. Please check your email."); window.location="/forgotpassword"</script>');
-            }
-        });
-    } catch (error) {
-        console.error('Error during forgot password:', error);
-        res.status(500).send('An error occurred during forgot password');
-    }
-
-});
-
-//reset password
-router.get('/resetpassword', (req, res) => {
-    res.render('resetpassword', { title: 'Reset Password', showHeader: false });
-});
-
-router.post('/resetpassword', async (req, res) => {
-    try {
-        const { email, newPassword, confirmPassword } = req.body;
-
-        // Periksa apakah newPassword sama dengan confirmPassword
-        if (newPassword !== confirmPassword) {
-            return res.status(400).send('New password and confirm password do not match');
-        }
-
-        // Cari pengguna berdasarkan email
-        const user = await Auth.findOne({ email });
-
-        // Periksa apakah pengguna ditemukan
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-
-        // Enkripsi password baru
-        const hashedPassword = await hashPass(newPassword);
-
-        // Atur password baru untuk pengguna
-        user.password = hashedPassword;
-
-        // Simpan perubahan ke dalam database
-        await user.save();
-
-        // Kirim respons sukses
-        res.send('Password has been reset successfully');
-    } catch (error) {
-        console.error('Error during password reset:', error);
-        res.status(500).send(`An error occurred during password reset: ${error.message}`);
-    }
-});
 
 // addset
 router.post('/user/:username/routine/:routineId/addSet', async (req, res) => {
