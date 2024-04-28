@@ -8,6 +8,7 @@
     --gray: #666;;
     --lightgray: #808183;
     --red: #ff5656;
+    --darkred: #D00404;
 }
 
 
@@ -27,13 +28,23 @@ body {
     box-sizing: border-box;
 }
 
-
-span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #333;
+    background-color: var(--white);
+    cursor: pointer;
+    border: var(--lightgray) 1px solid;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 10px;
 }
-
+button:hover {
+    background-color: var(--yellow); /* Change background color when hover */
+    color: var(--black); /* Change text color when hover */
+}
 
 /* login buat ulang design nya, coba suruh marcia*/
 .signup-body,
@@ -193,7 +204,7 @@ span {
     padding: 20px;
     text-align: center;
     bottom: 0;
-    position: fixed;
+    /* position: fixed; */
     bottom: 0;
     left: 0;
     width: 100%;
@@ -218,8 +229,15 @@ span {
     grid-gap: 10px;
     padding-bottom: 10px;
     width: auto;
-    min-height: 100vh;
+    min-height: 85vh;
     max-height: auto;
+}
+
+.guidePage{
+    width: auto;
+    min-height: 105vh;
+    max-height: auto;
+
 }
 
 .sidebar {
@@ -256,7 +274,7 @@ span {
 }
 
 
-.dummyRoutine, .routineGuide{
+.dummyRoutine, .routineGuide, .exerciseGuide{
     padding: 20px;
 }
 
@@ -278,15 +296,6 @@ span {
     align-self: center;
 }
 
-.routineBtn {
-    text-decoration: none;
-    color: var(--black);
-    padding: 10px;
-    border: var(--lightgray) 1px solid;
-    border-radius: 10px;
-    background-color: var(--red);
-    cursor: pointer;
-}
 
 .dummyRoutine__content {
     display: grid;
@@ -316,7 +325,19 @@ span {
     }
 }
 
+.deleteBtn {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
+.deleteBtn:hover {
+    background-color: var(--darkred);
+    color: var(--white);
+}
 
 /* right side bar */
 .info {
@@ -389,4 +410,23 @@ span {
     display: grid;
     grid-template-columns: 5fr 1fr;
     grid-gap: 10px;
+}
+
+.guide {
+    background-color: rgba(128, 128, 128, 0.5);
+    margin: 3vh 45vh;
+    border-radius: 10px;
+    padding: 20px
+}
+
+.routineGuide__content, .exerciseGuide__content {
+    grid-gap: 10px;
+}
+
+.container .ssimg{
+    margin: 20px auto;
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
 }
