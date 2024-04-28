@@ -196,9 +196,8 @@ router.post('/forgotpassword', async (req, res) => {
             from: `FitTrack <${process.env.EMAIL}>`,
             to: email,
             subject: 'Reset Password Email',
-            // Menambahkan URL ke dalam pesan email
-            html: `This link will expired in 15 minutes. <br>
-            Click <a href="${resetPasswordUrl}">here</a> to reset your password.`,
+            html: `You are receiving this because you (or someone else) have requested to reset the password on the account. Please click <a href="${resetPasswordUrl}">here</a> to reset your password <br>
+            This link will expired in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged`,
         };
 
         // Mengirim email
