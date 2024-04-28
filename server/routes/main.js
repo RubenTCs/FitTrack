@@ -109,7 +109,7 @@ router.post("/signup", async (req, res) => {
 }); 
 
 router.get("/signup", (req, res) => {
-    res.render("signup", { title: "Sign Up Page", showHeader: false});
+    res.render("signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
 });
 
 //login
@@ -144,7 +144,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-    res.render("login", { title: "Login Page", showHeader: false });
+    res.render("login", { title: "Login Page", showHeader: false, footerFixed: true});
 });
 
 //Routine
@@ -537,4 +537,6 @@ router.get("/logout", (req, res) => {
     res.clearCookie("jwt");
     res.redirect("/");
 });
+
+
 module.exports = router;
