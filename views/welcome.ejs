@@ -1,7 +1,19 @@
-<div>
-    <h1>Welcome <%= user.username %> to FITTRACK</h1>
-    <hr>
-
-    <p>To get started, click +Add Routine on the sidebar</p>
-    <p>or</p>
+<div class="welcomePage">
+    <div class="welcomePage__title">
+        <h1>Welcome to FITTRACK</h1>
+        <hr>
+    </div>
+    <div class="welcomePage__content">
+        <p>Track your daily routine and stay fit</p>
+        <p>To get started, click +Add Routine on the sidebar</p>
+        <p>or</p>
+        <p>Navigate the existing Routine</p>
+        <p>or</p>
+        <p>Check the <a href="">Guide</a></p>
+    </div>
+    <div>
+        <%- include('info.ejs') %>
+    </div>
+    
+    
 </div>
