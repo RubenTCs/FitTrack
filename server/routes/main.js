@@ -156,8 +156,8 @@ router.get("/login", (req, res) => {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'gavrielj30@gmail.com',
-        pass: 'qacu yffp zggc nykz'
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD
     }
 });
 
@@ -193,7 +193,7 @@ router.post('/forgotpassword', async (req, res) => {
         // URL halaman reset password di localhost:3000
         const resetPasswordUrl = `http://localhost:3000/resetpassword?email=${email}&token=${resetToken}`;
         const mailOptions = {
-            from: 'gavrielj30@gmail.com',
+            from: `FitTrack <${process.env.EMAIL}>`,
             to: email,
             subject: 'Reset Password Email',
             // Menambahkan URL ke dalam pesan email
