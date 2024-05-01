@@ -11,8 +11,6 @@
     --darkred: #D00404;
 }
 
-
-
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
@@ -231,12 +229,19 @@ button:hover {
     width: auto;
     min-height: 85vh;
     max-height: auto;
+    background-image: url('img/white-texture-background.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .guidePage{
+    padding: 10px;
     width: auto;
     min-height: 105vh;
     max-height: auto;
+    background-image: url('img/white-texture-background-2.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .sidebar {
@@ -275,6 +280,7 @@ button:hover {
 
 .dummyRoutine, .routineGuide, .exerciseGuide{
     padding: 20px;
+    
 }
 
 .dummyRoutine__title {
@@ -474,4 +480,12 @@ button:hover {
     object-fit: cover;
     width: 100%;
     height: auto;
+}
+
+.welcomePage{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
