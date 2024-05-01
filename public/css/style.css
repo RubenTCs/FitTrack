@@ -237,7 +237,6 @@ button:hover {
     width: auto;
     min-height: 105vh;
     max-height: auto;
-
 }
 
 .sidebar {
@@ -454,9 +453,15 @@ button:hover {
 
 .guide {
     background-color: rgba(128, 128, 128, 0.5);
-    margin: 3vh 45vh;
+    margin: 3vh 5vh;
     border-radius: 10px;
     padding: 20px
+}
+
+.guide__content{
+    border: var(--lightgray) 1px solid;
+    border-radius: 10px;
+    margin: 30px 50vh;
 }
 
 .routineGuide__content, .exerciseGuide__content {
