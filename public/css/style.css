@@ -412,6 +412,46 @@ button:hover {
     grid-gap: 10px;
 }
 
+.about-page {
+    p {
+        margin-bottom: 20px; 
+        text-align: left; 
+        margin-left: 5%; 
+        margin-right: 5%; 
+        max-width: 90%; 
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 0vh;
+        margin-bottom: 2vh;
+        color: rgb(223, 155, 52);
+        background-image: url('https://25070129.fs1.hubspotusercontent-eu1.net/hubfs/25070129/Images%20-%20Blog/Vignettes/57.svg');
+        background-size: cover;
+        padding: 10vw;
+    }
+
+    h2 {
+        text-align: left;
+        color: rgb(223, 155, 52);
+        margin-left: 5%;
+        max-width: 90%;
+    }
+
+    .image-right {
+        margin: 20px auto;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.about-page__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    padding: 20px;
+}
+
 .guide {
     background-color: rgba(128, 128, 128, 0.5);
     margin: 3vh 45vh;
