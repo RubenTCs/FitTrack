@@ -1,13 +1,89 @@
-<!-- style this please -->
-<div class="routineGuide">
-    <div class="routineGuide__title">
-        <h1 id="routineName">Guide</h1>
-        <hr>
+<div class="guidePage">
+    <h1 style="text-align: center; margin: 3vh;">GUIDE</h1>
+    <div class="guide">
+        <div class="routineGuide" id="routineGuide">
+            <div class="routineGuide__title" >
+                <h2>Routine</h2>
+                <hr>
+            </div>
+            
+            <div class="routineGuide__content">
+                <div class="routineGuides">
+                    <h3>Routine's Content</h3>
+                    <div class="container">
+                        <img src="/img/ssRoutineContent.png" alt="ssAddRoutine" class="ssimg">
+                    </div>
+                    
+                    <h3>Adding Routine</h3>
+                    <p>To add routine click the button on the sidebar <span style="color: #fbaf41;">+Add Routine</span>. It will then shows a menu on the right sidebar.</p>
+                    <p>After creating the routine, it will be added to the sidebar.</p>
+                    
+                    <h3>Navigating Routine</h3>
+                    <p>The routine that have been created will be added to the sidebar under the Add Routine button.</p>
+                    <p>Select the routine's name highlighted in <span style="color: #fe5c34">color</span> to show the details of the routine. After clicking the routine's name, the routine will be shown in the content area.</p>
+                    
+                    <h3>Deleting Routine</h3>
+                    <p>To delete a routine, click the <span style="color: #ff5656">Delete Routine</span> button on the right of the routine's name.</p>
+                    <p>It will then shows a confirmation dialog to delete the routine.</p>
+                </div>
+            </div>    
+        </div>
     </div>
     
-    <div class="routineGuide__content">
-        <!-- add the guide please -->
-        <p>To use the app </p>
-    </div>    
-    <%- include('info.ejs') %>
+    <div class="guide">
+        <div class="exerciseGuide" id="exerciseGuide">
+            <div class="exerciseGuide__title" >
+                <h2>Exercise</h2>
+                <hr>
+            </div>
+            
+            <div class="exerciseGuide__content">
+                <div class="exerciseGuides">
+                    <h3>Adding Exercise to a Routine</h3>
+                    <p>To add exercise, click the <span style="color: #fbaf41">+Add Exercise</span> button on routine content. It will then shows a list of exercise that is provided and custom exercise on the right sidebar shown in the picture below: </p>
+                    <div class="container">
+                        <img src="/img/ssAddExercise.png" alt="ssAddExercise" class="ssimg">
+                    </div>
+                    <p>You can sort by alphabet of the exercise's name by clicking <span style="color: #fbaf41">Sort by Name</span> button.</p>
+                    <p>Click one of the exercise in the list to add the exercise to the Routine.</p>    
+                    
+                    <h3>Deleting Exercise from Routine</h3>
+                    <p>To delete an exercise, click the <span style="color: #ff5656">Delete Exercise</span> button on the exercise beside the <span style="color: #fbaf41">+ Add Set</span> button</p>
+                    <p>It will then shows a confirmation dialog to delete the exercise.</p>
+
+                    <h3>Creating Custom Exercise</h3>
+                    <p>To create custom exercise, click the <span style="color: #fbaf41">Custom Exercise</span> button on the right sidebar. It will then shows a form to create custom exercise shown in the picture below: </p>
+                    <div class="container">
+                        <img src="/img/ssAddCustomExercise.png" alt="ssAddExercise" class="ssimg">
+                    </div>
+                    <p>Click <span style="color: #fbaf41">Add Custom Exercise</span> button, it will then be added to the list of exercise on Add Exercise.</p>
+                    <p>Click <span style="color: #fbaf41">&lt Back</span> to go back to Add Exercise.</p>
+
+                    <h3>Deleting Custom Exercise</h3>
+                    <p>To delete a custom exercise, click the <span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683418 14.0976 1.31658 14.0976 1.70711 13.7071L0.292893 12.2929ZM13.7071 1.70711C14.0976 1.31658 14.0976 0.683418 13.7071 0.292894C13.3166 -0.0976306 12.6834 -0.0976305 12.2929 0.292894L13.7071 1.70711ZM1.70711 0.292893C1.31658 -0.097631 0.683418 -0.0976311 0.292893 0.292893C-0.097631 0.683417 -0.0976311 1.31658 0.292893 1.70711L1.70711 0.292893ZM12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L12.2929 13.7071ZM1.70711 13.7071L13.7071 1.70711L12.2929 0.292894L0.292893 12.2929L1.70711 13.7071ZM0.292893 1.70711L12.2929 13.7071L13.7071 12.2929L1.70711 0.292893L0.292893 1.70711Z" fill="#111827"/>
+                        </svg>
+                    </span> button on the list of exercise on Add Exercise.</p>
+
+                    <h3>Adding Set</h3>
+                    <p>To add set to an exercise, click <span style="color: #fbaf41">+ Add Set</span> on the exercise. It will then shows a form based on the type of exercise to add set to the exercise shown in the picture below: </p>
+                    <div class="container">
+                        <img src="/img/ssAddSet.png" alt="ssAddExercise" class="ssimg">
+                    </div>
+                    <p>Click <span style="color: #fe5c34">Submit</span> to add set and their details on the exercise.</p>
+                    
+                    <h3>Deleting Set</h3>
+                    <p>To delete a set, click the <span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683418 14.0976 1.31658 14.0976 1.70711 13.7071L0.292893 12.2929ZM13.7071 1.70711C14.0976 1.31658 14.0976 0.683418 13.7071 0.292894C13.3166 -0.0976306 12.6834 -0.0976305 12.2929 0.292894L13.7071 1.70711ZM1.70711 0.292893C1.31658 -0.097631 0.683418 -0.0976311 0.292893 0.292893C-0.097631 0.683417 -0.0976311 1.31658 0.292893 1.70711L1.70711 0.292893ZM12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L12.2929 13.7071ZM1.70711 13.7071L13.7071 1.70711L12.2929 0.292894L0.292893 12.2929L1.70711 13.7071ZM0.292893 1.70711L12.2929 13.7071L13.7071 12.2929L1.70711 0.292893L0.292893 1.70711Z" fill="#111827"/>
+                        </svg>
+                    </span> button on the exercise set beside the set index.</p>
+                </div>
+                
+            </div>
+    </div>
+    
+    
+    
 </div>

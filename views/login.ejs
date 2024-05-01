@@ -1,14 +1,25 @@
-<div class="login">
-    <h1>Login</h1>
-    <form action="/login" method="POST">
-        <input type="email" name="email" placeholder="Email">
-        <br>
-        <input type="password" name="password" placeholder="Password" autocomplete="off">
-        <br>
-        <input type="submit" class="sub" value="Login">
-    </form>
-    <div class="loginBtn">
-        <h3>New? <a href="/signup">Sign up here</a></h3>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login">
+            <h1>Login</h1>
+            <form action="/login" method="POST">
+                <div class="input-container login-input">
+                    <input type="email" name="email" placeholder="Email" autocomplete="off">
+                    <i class="fas fa-envelope icon"></i>
+                </div>
+                <br>
+                <div class="input-container login-input">
+                    <input type="password" name="password" id="password" placeholder="Password" autocomplete="off">
+                    <i class="fas fa-lock icon"></i>
+                    <i class="fas fa-eye icon" id="togglePassword"></i>
+                    <i class="fas fa-eye-slash icon" id="togglePassword"></i>
+                </div>
+                <br>
+                <input type="submit" class="sub" value="Login">
+            </form>
+            <div class="loginBtn">
+                <h3>New? <a href="/signup">Sign up here</a></h3>
+            </div>
+        </div>
     </div>
-</div>
-
+</body>

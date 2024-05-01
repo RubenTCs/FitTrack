@@ -1,3 +1,9 @@
-<footer class="footer">
-    &copy; <%= new Date().getFullYear(); %> Kelompok 12 • Built with NodeJS and MongoDB
-</footer>
+<% if (typeof footerFixed === 'undefined' || !footerFixed) { %>
+    <footer class="footer" >
+        &copy; <%= new Date().getFullYear(); %> Kelompok 12 • Built with NodeJS and MongoDB
+    </footer>
+<% } else if (footerFixed){ %>
+    <footer class="footer" style="position: fixed">
+        &copy; <%= new Date().getFullYear(); %> Kelompok 12 • Built with NodeJS and MongoDB
+    </footer>
+<% } %>
