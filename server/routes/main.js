@@ -1,7 +1,9 @@
 const express = require('express');
 const jwt = require("jsonwebtoken");
 const bcryptjs = require('bcryptjs');
+
 const router = express.Router();
+const nodemailer = require('nodemailer');
 
 const Auth = require('../models/auth');
 const Routine = require('../models/routine');
@@ -85,15 +87,17 @@ router.post("/signup", async (req, res) => {
     try {
         const checkEmail = await Auth.findOne({ email: req.body.email });
         const checkName = await Auth.findOne({ username: req.body.username });
-        console.log(checkEmail, checkName);
+
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
-        } if (checkName){
-            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>.');
-        }else {
-            const token = jwt.sign({ username: req.body.username }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
+        } 
+        else if (checkName){ // Menggunakan else if
+            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>'); // Hapus tanda titik (.) di sini
+        }
+        else {
+            const token = jwt.sign({ username: req.body.name }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
             const data = {
-                username: req.body.username,
+                username: req.body.name,
                 email: req.body.email,
                 password: await hashPass(req.body.password),
                 token: token 
@@ -145,6 +149,124 @@ router.post("/login", async (req, res) => {
 
 router.get("/login", (req, res) => {
     res.render("login", { title: "Login Page", showHeader: false, footerFixed: true});
+});
+
+//forgot password
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+// Rute untuk menampilkan halaman forgot password
+router.get('/forgotpassword', (req, res) => {
+    res.render('forgotpassword', { title: 'Forgot Password', showHeader: false });
+});
+
+// Buat nyimpan token reset password
+const resetPasswordTokens = new Map();
+// Untuk reset password
+const generateToken = async () => {
+    try {
+        const token = await bcryptjs.hash(Date.now().toString(), 10); // Hashing a timestamp for randomness
+        return token;
+    } catch (error) {
+        console.error('Error generating token:', error);
+        throw error;
+    }
+};
+
+// Rute untuk menangani permintaan reset password
+router.post('/forgotpassword', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Generate token untuk reset password
+        const resetToken = await generateToken();
+        const expirationTime = Date.now() + (15 * 60 * 1000); // 15 minutes in milliseconds
+
+        resetPasswordTokens.set(email, { token: resetToken, expiresAt: expirationTime });
+
+        // URL halaman reset password di localhost:3000
+        const resetPasswordUrl = `http://localhost:3000/resetpassword?email=${email}&token=${resetToken}`;
+        const mailOptions = {
+            from: `FitTrack <${process.env.EMAIL}>`,
+            to: email,
+            subject: 'Reset Password Email',
+            html: `You are receiving this because you (or someone else) have requested to reset the password on the account. Please click <a href="${resetPasswordUrl}">here</a> to reset your password <br>
+            This link will expired in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged`,
+        };
+
+        // Mengirim email
+        if (!Auth.findOne({email})){
+            res.send('<script>alert("The email has been sent, if there is an account with that email"); window.location="/forgotpassword"</script>');
+        } else {
+            transporter.sendMail(mailOptions, function (err, info) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send('Failed to send reset password email');
+                } else {
+                    console.log('Email Terkirim' + info.response);
+                    res.send('<script>alert("Password reset email sent. Please check your email."); window.location="/forgotpassword"</script>');
+                }
+            });
+        }
+        
+    } catch (error) {
+        console.error('Error during forgot password:', error);
+        res.status(500).send('An error occurred during forgot password');
+    }
+
+});
+
+//reset password
+router.get('/resetpassword', (req, res) => {
+    const { email, token } = req.query;
+    console.log(email, token);
+    const storedToken = resetPasswordTokens.get(email);
+    if (!storedToken || storedToken.token !== token || storedToken.expiresAt < Date.now()) {
+        return res.status(400).send('Invalid or expired reset token');
+    }
+
+
+    res.render('resetpassword', { title: 'Reset Password', showHeader: false, email: email});
+});
+
+router.post('/resetpassword', async (req, res) => {
+    try {
+        const {newPassword, confirmPassword } = req.body;
+        const email = req.query.email;
+        console.log(email)
+        // Periksa apakah newPassword sama dengan confirmPassword
+        if (newPassword !== confirmPassword) {
+            return res.send('<script>alert("New password and confirm password do not match."); window.location="/forgotpassword";</script>');
+        }
+
+        // Cari pengguna berdasarkan email
+        const user = await Auth.findOne({ email });
+
+        // Periksa apakah pengguna ditemukan
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Enkripsi password baru
+        const hashedPassword = await hashPass(newPassword);
+
+        // Atur password baru untuk pengguna
+        user.password = hashedPassword;
+
+        // Simpan perubahan ke dalam database
+        await user.save();
+
+        // Kirim respons sukses
+        res.send('<script>alert("Password has been reset successfully. You can now log in with your new password."); window.location="/login";</script>');
+    } catch (error) {
+        console.error('Error during password reset:', error);
+        res.status(500).send(`An error occurred during password reset: ${error.message}`);
+    }
 });
 
 //Routine
@@ -363,6 +485,8 @@ router.post('/addCustomExercise', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 
 // addset
 router.post('/user/:username/routine/:routineId/addSet', async (req, res) => {
