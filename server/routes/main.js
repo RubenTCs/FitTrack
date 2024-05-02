@@ -24,8 +24,6 @@ async function compare(userPass, hashPass) {
     return res; 
 } 
 
-
-
 // Middleware to check if the user is authenticated
 function requireAuth(req, res, next) {
     // Check if the user is logged in (by checking the presence of the JWT token)
@@ -70,16 +68,16 @@ function requireCorrectUser(req, res, next) {
 router.get('/',  (req, res) => {
 
     try{
-        res.render('login', {title: 'Login', showHeader: false});
+        res.redirect('/login');
     } catch (error){
         console.log(error);
     }
-}); 
+});
 //default Route
 router.get('',  (req, res) => {
 
     try{
-        res.render('login', {title: 'Login', showHeader: false});
+        res.redirect('/login');
     } catch (error){
         console.log(error);
     }
@@ -89,7 +87,8 @@ router.get('',  (req, res) => {
 router.post("/signup", async (req, res) => {
     try {
         const checkEmail = await Auth.findOne({ email: req.body.email });
-        const checkName = await Auth.findOne({ username: req.body.name }); // Ubah ke req.body.name
+        const checkName = await Auth.findOne({ username: req.body.username });
+
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
         } 
@@ -103,7 +102,8 @@ router.post("/signup", async (req, res) => {
                 email: req.body.email,
                 password: await hashPass(req.body.password),
                 token: token 
-            };
+            }; 
+            console.log(data);
             await Auth.insertMany([data]);
             return res.send('<script>alert("User Created"); window.location="/login"</script>');
         }
@@ -114,7 +114,7 @@ router.post("/signup", async (req, res) => {
 }); 
 
 router.get("/signup", (req, res) => {
-    res.render("signup", { title: "Register", showHeader: false});
+    res.render("signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
 });
 
 //login
@@ -149,7 +149,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-    res.render("login", { title: "Login", showHeader: false });
+    res.render("login", { title: "Login Page", showHeader: false, footerFixed: true});
 });
 
 //forgot password
@@ -351,13 +351,13 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
 
 
 //Profile (considering removing this)
-router.get('/:username/profile', requireAuth, requireCorrectUser, async (req, res) => {
+router.get('/:username/guide', requireAuth, requireCorrectUser, async (req, res) => {
     try {
 
         const userName = req.params.username;
         const user = await Auth.findOne({ username: userName });
 
-        res.render('profile', {title: 'Profile', user: user});
+        res.render('routineGuide', {title: 'Guide', user: user});
     }
     catch (error){
         console.log(error);
@@ -662,4 +662,6 @@ router.get("/logout", (req, res) => {
     res.clearCookie("jwt");
     res.redirect("/");
 });
+
+
 module.exports = router;

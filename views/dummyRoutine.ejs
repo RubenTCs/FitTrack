@@ -6,7 +6,7 @@
             <p> <%= selectedRoutine.description %></p>
         </div>
         <div class="routineBtnpos">
-            <a class="routineBtn" onclick="deleteRoutine('<%= selectedRoutine._id %>', '<%= user.username %>', '<%= user._id %>')">Delete Routine</a>
+            <a class="deleteBtn" onclick="deleteRoutine('<%= selectedRoutine._id %>', '<%= user.username %>', '<%= user._id %>')">Delete Routine</a>
         </div>
     </div>
     <hr>
@@ -67,7 +67,7 @@
                     <tr>
                         <th colspan="3">
                             <button onclick="addSetSidebar('<%= exercise._id.exercisename %>', '<%= exercise._id.type %>', '<%= exercise._id._id %>', '<%= exerciseIndex %>')">+ Add Set</button>
-                            <button onclick="deleteExerciseFromRoutine( '<%= selectedRoutine._id %>', '<%= user._id %>', '<%= user.username %>' ,'<%= exerciseIndex %>')">Delete Exercise</button>
+                            <button class="deleteBtn" onclick="deleteExerciseFromRoutine( '<%= selectedRoutine._id %>', '<%= user._id %>', '<%= user.username %>' ,'<%= exerciseIndex %>')">Delete Exercise</button>
                         </th><%=  %>
                     </tr>
                 </table>
@@ -137,14 +137,14 @@
                     <tr>
                         <th colspan="3">
                             <button onclick="addSetSidebar('<%= customexercise._id.exercisename %>', '<%= customexercise._id.type %>', '<%= customexercise._id._id %>',  '<%= exerciseIndex %>')">+ Add Set</button>
-                            <button onclick="deleteExerciseFromRoutine('<%= selectedRoutine._id %>', '<%= user._id %>', '<%= user.username %>',  '<%= exerciseIndex %>')">Delete Exercise</button>
+                            <button class="deleteBtn" onclick="deleteExerciseFromRoutine('<%= selectedRoutine._id %>', '<%= user._id %>', '<%= user.username %>',  '<%= exerciseIndex %>')">Delete Exercise</button>
                         </th>
                     </tr>
                 </table>
                 <br>
         <% }) %>
             <!-- Center the button please -->
-            <a class='AddExercise' onclick="addExerciseSidebar()">+ Add Exercise</a>
+            <button class='AddExercise' onclick="addExerciseSidebar()">+ Add Exercise</button>
     </div>
         
         <%- include('info.ejs') %>
