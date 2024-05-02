@@ -256,7 +256,7 @@ span {
 }
 
 /* CSS untuk halaman Forgot Password */
-.forgot-password-body {
+.forgot-password {
     background-image: url('img/bg.jpg');
     background-size: cover;
     background-position: center;
@@ -340,7 +340,7 @@ span {
 }
 
 /* css untuk page reset password */
-.reset-password-body {
+.reset-password {
     background-image: url('img/bg.jpg');
     background-size: cover;
     background-position: center;
