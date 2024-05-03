@@ -90,30 +90,27 @@ router.post("/signup", async (req, res) => {
 
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
-        } else if (checkName) {
-            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>');
-        } else {
-            // Check minimum password length
-            if (req.body.password.length < 8) {
-                return res.send('<script>alert("Password must be at least 8 characters long"); window.location="/signup"</script>');
-            }
-
+        } 
+        else if (checkName){ // Menggunakan else if
+            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>'); // Hapus tanda titik (.) di sini
+        }
+        else {
             const token = jwt.sign({ username: req.body.name }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
             const data = {
                 username: req.body.name,
                 email: req.body.email,
                 password: await hashPass(req.body.password),
-                token: token
-            };
+                token: token 
+            }; 
             console.log(data);
             await Auth.insertMany([data]);
             return res.send('<script>alert("User Created"); window.location="/login"</script>');
         }
-    } catch (error) {
+    } catch (error){
         console.error("Error during signup:", error);
-        return res.status(500).send("An error occurred during signup");
-    }
-});
+        return res.status(500).send("An error occurred during signup"); 
+    } 
+}); 
 
 router.get("/signup", (req, res) => {
     res.render("signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
