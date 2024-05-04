@@ -87,7 +87,8 @@ router.post("/signup", async (req, res) => {
     try {
         const checkEmail = await Auth.findOne({ email: req.body.email });
         const checkName = await Auth.findOne({ username: req.body.username });
-
+        console.log(req.body.email, req.body.username)
+        console.log(checkEmail, checkName)
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
         } 
@@ -97,11 +98,12 @@ router.post("/signup", async (req, res) => {
         else {
             const token = jwt.sign({ username: req.body.name }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
             const data = {
-                username: req.body.name,
+                username: req.body.username,
                 email: req.body.email,
                 password: await hashPass(req.body.password),
                 token: token 
             }; 
+            console.log(data);
             console.log(data);
             await Auth.insertMany([data]);
             return res.send('<script>alert("User Created"); window.location="/login"</script>');
