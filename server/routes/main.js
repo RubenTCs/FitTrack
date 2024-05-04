@@ -88,26 +88,9 @@ router.post("/signup", async (req, res) => {
         const checkEmail = await Auth.findOne({ email: req.body.email });
         const checkName = await Auth.findOne({ username: req.body.username });
         console.log(req.body.email, req.body.username)
-        console.log(checkEmail, checkName)
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
-<<<<<<< Updated upstream
-        } 
-        else if (checkName){ // Menggunakan else if
-            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>'); // Hapus tanda titik (.) di sini
-        }
-        else {
-            const token = jwt.sign({ username: req.body.name }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
-            const data = {
-                username: req.body.username,
-                email: req.body.email,
-                password: await hashPass(req.body.password),
-                token: token 
-            }; 
-            console.log(data);
-            console.log(data);
-            await Auth.insertMany([data]);
-=======
+
         } else if (checkName) {
             return res.send('<script>alert("Username has been used"); window.location="/signup"</script>');
         } else {
@@ -120,7 +103,7 @@ router.post("/signup", async (req, res) => {
                 token: token
             });
             await newUser.save();
->>>>>>> Stashed changes
+
             return res.send('<script>alert("User Created"); window.location="/login"</script>');
         }
     } catch (error) {
