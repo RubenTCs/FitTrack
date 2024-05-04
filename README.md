@@ -22,4 +22,5 @@ Navigate to 'http://localhost:3000' in your browser to start using it.
 Checkout [Github repository](https://github.com/RubenTCs/FitTrack) for more information
 
 ## Repobeats
+
 ![Alt](https://repobeats.axiom.co/api/embed/1e591537b4d5fe4c8a65089874a531573ccfaeeb.svg "Repobeats analytics image")
