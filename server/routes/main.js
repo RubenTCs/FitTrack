@@ -90,6 +90,7 @@ router.post("/signup", async (req, res) => {
 
         if (checkEmail) {
             return res.send('<script>alert("Email has been used"); window.location="/signup"</script>');
+<<<<<<< Updated upstream
         } 
         else if (checkName){ // Menggunakan else if
             return res.send('<script>alert("Username has been used"); window.location="/signup"</script>'); // Hapus tanda titik (.) di sini
@@ -104,13 +105,27 @@ router.post("/signup", async (req, res) => {
             }; 
             console.log(data);
             await Auth.insertMany([data]);
+=======
+        } else if (checkName) {
+            return res.send('<script>alert("Username has been used"); window.location="/signup"</script>');
+        } else {
+            const token = jwt.sign({ username: req.body.username }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
+            const hashedPassword = await hashPass(req.body.password);
+            const newUser = new Auth({
+                username: req.body.username,
+                email: req.body.email,
+                password: hashedPassword,
+                token: token
+            });
+            await newUser.save();
+>>>>>>> Stashed changes
             return res.send('<script>alert("User Created"); window.location="/login"</script>');
         }
-    } catch (error){
+    } catch (error) {
         console.error("Error during signup:", error);
-        return res.status(500).send("An error occurred during signup"); 
-    } 
-}); 
+        return res.status(500).send("An error occurred during signup");
+    }
+});
 
 router.get("/signup", (req, res) => {
     res.render("signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
@@ -125,25 +140,28 @@ router.post("/login", async (req, res) => {
             return res.send('<script>alert("Please enter both email and password"); window.location="/login"</script>');
         }
 
-        const check = await Auth.findOne({ email });
-        if (!check) {
+        const user = await Auth.findOne({ email });
+
+        if (!user) {
             return res.send('<script>alert("Account not found"); window.location="/login"</script>');
         }
 
-        const passCheck = await compare(password, check.password);
+        const passCheck = await compare(password, user.password);
+
         if (passCheck) {
-            res.cookie("jwt", check.token, {
+            const token = jwt.sign({ username: user.username }, "abcdefghijklmnopqrstuvwxyzabcdeghijklmnopqrstuvwxyz");
+            res.cookie("jwt", token, {
                 maxAge: 600000, //in 600000 miliseconds = 10 minutes
                 httpOnly: true
             });
 
-            res.redirect(`/user/${check.username}/routine?userId=${check._id}`); //better format??? the user_id is kinda exposed tho
+            res.redirect(`/user/${user.username}/routine?userId=${user._id}`);
         } else {
-            res.send('<script>alert("Wrong password"); window.location="/"</script>');
+            res.send('<script>alert("Wrong password"); window.location="/login"</script>');
         }
-    } catch (error){
+    } catch (error) {
         console.error("Error during login:", error);
-        return res.status(500).send("An error occurred during signup"); 
+        return res.status(500).send("An error occurred during login");
     }
 });
 
