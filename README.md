@@ -1,6 +1,6 @@
 # FitTrack
 
-# Description
+## Description
 This is a simple fitness tracking website built with Node.js, Express, and MongoDB.
 
 ## Setup
