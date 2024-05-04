@@ -7,7 +7,7 @@ This is a simple fitness tracking website built with Node.js, Express, and Mongo
 1. Clone this repository: `git clone https://github.com/RubenTCs/FitTrack.git`
 2. Navigate to the project directory: `cd FitTrack`
 3. Install dependencies: `npm install`
-4. Create a `.env` file in the root directory and add these:
+4. Create a `.env` file in the root directory and add these variables:
     - MONGO_URI
     - EMAIL
     - EMAIL_PASSWORD
