@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require("jsonwebtoken");
-const bcryptjs = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 const nodemailer = require('nodemailer');
@@ -14,12 +14,12 @@ const exercise = require('../models/exercise');
 router.use(express.urlencoded({ extended: false }));
 
 async function hashPass(password) {
-    const res = await bcryptjs.hash(password, 10);
+    const res = await bcrypt.hash(password, 10);
     return res;
 }
 
 async function compare(userPass, hashPass) {
-    const res = await bcryptjs.compare(userPass, hashPass);
+    const res = await bcrypt.compare(userPass, hashPass);
     return res; 
 } 
 
@@ -173,7 +173,7 @@ const resetPasswordTokens = new Map();
 // Untuk reset password
 const generateToken = async () => {
     try {
-        const token = await bcryptjs.hash(Date.now().toString(), 10); // Hashing a timestamp for randomness
+        const token = await bcrypt.hash(Date.now().toString(), 10); // Hashing a timestamp for randomness
         return token;
     } catch (error) {
         console.error('Error generating token:', error);
