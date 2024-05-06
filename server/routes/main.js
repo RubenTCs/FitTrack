@@ -112,7 +112,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.get("/signup", (req, res) => {
-    res.render("pages/auth/signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
+    res.render("auth/signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
 });
 
 //login
@@ -150,7 +150,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-    res.render("pages/auth/login", { title: "Login Page", showHeader: false, footerFixed: true});
+    res.render("auth/login", { title: "Login Page", showHeader: false, footerFixed: true});
 });
 
 //forgot password
@@ -164,7 +164,7 @@ const transporter = nodemailer.createTransport({
 
 // Rute untuk menampilkan halaman forgot password
 router.get('/forgotpassword', (req, res) => {
-    res.render('pages/auth/forgotpassword', { title: 'Forgot Password', showHeader: false });
+    res.render('auth/forgotpassword', { title: 'Forgot Password', showHeader: false });
 });
 
 // Buat nyimpan token reset password
@@ -233,7 +233,7 @@ router.get('/resetpassword', (req, res) => {
     }
 
 
-    res.render('pages/auth/resetpassword', { title: 'Reset Password', showHeader: false, email: email});
+    res.render('auth/resetpassword', { title: 'Reset Password', showHeader: false, email: email});
 });
 
 router.post('/resetpassword', async (req, res) => {
