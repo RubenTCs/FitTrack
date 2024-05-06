@@ -2,10 +2,10 @@
   "name": "fittrack",
   "version": "1.0.0",
   "description": "FitnessTrackingApp",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "app.js",
+    "start": "nodemon app.js",
     "dev": "nodemon app.js"
   },
   "author": "Ruben",
