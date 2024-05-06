@@ -11,6 +11,7 @@ This is a simple fitness tracking website built with Node.js, Express, and Mongo
     - MONGO_URI
     - EMAIL
     - EMAIL_PASSWORD
+    - JWT_SECRET
 5. Start the server: `npm run dev`
 
 ## Usage
