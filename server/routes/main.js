@@ -5,11 +5,10 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 
-const Auth = require('../models/auth');
-const Routine = require('../models/routine');
-const CustomExercise = require('../models/customexercise');
-const ExerciseDB = require('../models/exercise');
-const exercise = require('../models/exercise');
+const Auth = require('../models/auth.js');
+const Routine = require('../models/routine.js');
+const CustomExercise = require('../models/customexercise.js');
+const ExerciseDB = require('../models/exercise.js');
 
 router.use(express.urlencoded({ extended: false }));
 
@@ -113,7 +112,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.get("/signup", (req, res) => {
-    res.render("signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
+    res.render("pages/auth/signup", { title: "Sign Up Page", showHeader: false, footerFixed: true});
 });
 
 //login
@@ -151,7 +150,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-    res.render("login", { title: "Login Page", showHeader: false, footerFixed: true});
+    res.render("pages/auth/login", { title: "Login Page", showHeader: false, footerFixed: true});
 });
 
 //forgot password
@@ -165,7 +164,7 @@ const transporter = nodemailer.createTransport({
 
 // Rute untuk menampilkan halaman forgot password
 router.get('/forgotpassword', (req, res) => {
-    res.render('forgotpassword', { title: 'Forgot Password', showHeader: false });
+    res.render('pages/auth/forgotpassword', { title: 'Forgot Password', showHeader: false });
 });
 
 // Buat nyimpan token reset password
@@ -234,7 +233,7 @@ router.get('/resetpassword', (req, res) => {
     }
 
 
-    res.render('resetpassword', { title: 'Reset Password', showHeader: false, email: email});
+    res.render('pages/auth/resetpassword', { title: 'Reset Password', showHeader: false, email: email});
 });
 
 router.post('/resetpassword', async (req, res) => {
@@ -352,14 +351,14 @@ router.get('/user/:username/routine/:routineId', requireAuth, requireCorrectUser
 });
 
 
-//Profile (considering removing this)
+//Guide
 router.get('/:username/guide', requireAuth, requireCorrectUser, async (req, res) => {
     try {
 
         const userName = req.params.username;
         const user = await Auth.findOne({ username: userName });
 
-        res.render('routineGuide', {title: 'Guide', user: user});
+        res.render('./pages/other/routineGuide', {title: 'Guide', user: user});
     }
     catch (error){
         console.log(error);
@@ -373,7 +372,7 @@ router.get('/:username/about', async (req, res) => {
         // console.log('username: ', userName);
         const user = await Auth.findOne({ username: userName });
 
-        res.render('about', {title: 'About', user: user});
+        res.render('./pages/other/about', {title: 'About', user: user});
     }
     catch (error){
         console.log(error);
